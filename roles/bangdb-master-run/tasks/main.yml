@@ -2,7 +2,7 @@
 
 
 - name: run bangdb master
-  command: {{project_dir}}/bangdb-server/bangdb-server -i master -r yes -t yes -s {{inventory_hostname}}:{{port}} -b yes
+  command: "{{project_dir}}/bangdb-server/bangdb-server -i master -r yes -t yes -s {{inventory_hostname}}:{{port}} -b yes"
   args:
     chdir: "{{project_dir}}/bangdb-server"
   register: bangdb
