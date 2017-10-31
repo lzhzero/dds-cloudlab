@@ -1,0 +1,32 @@
+---
+
+- name: replace ntp.conf with zliu.ntp.conf
+  copy:
+    src: /etc/ntp.conf
+    dest: /etc/zliu.ntp.conf
+  become: true
+
+- name: modify /etc/default/ntp
+  lineinfile:
+    path: /etc/default/ntp
+    regexp: '^NTPD_OPTS='
+    line: "NTPD_OPTS='-g -c /etc/zliu.ntp.conf'"
+  become: true
+
+- name: modify zliu.ntp.conf
+  lineinfile:
+    path: /etc/zliu.ntp.conf
+    regexp: '^restrict ntp1'
+    line: 'restrict ntp1.wisc.cloudlab.us'
+  become: true
+
+- name: mpdify zliu.ntp.conf continued
+  lineinfile:
+    path: /etc/zliu.ntp.conf
+    regexp: '^server ntp1'
+    line: 'server ntp1.wisc.cloudlab.us'
+  become: true
+
+- name: restart ntpd
+  raw: service ntp restart
+  become: true

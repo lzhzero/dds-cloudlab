@@ -1,0 +1,11 @@
+---
+
+
+- name: run bangdb slave
+  command: {{project_dir}}/bangdb-server/bangdb-server -i slave -r yes -t yes -s {{inventory_hostname}}:{{port}} -m {{server_ip}}:{{port}}  -b yes
+  args:
+    chdir: "{{project_dir}}/bangdb-server/"
+  register: bangdb
+
+- debug:
+    msg: "{{bangdb.stdout}}"

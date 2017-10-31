@@ -1,0 +1,12 @@
+---
+
+- name: unmount /ssd
+  mount:
+    path: "{{project_dir}}"
+    state: unmounted
+  become: true
+
+- name: rm /ssd
+  raw: "rm -rf {{project_dir}}"
+  become: true
+

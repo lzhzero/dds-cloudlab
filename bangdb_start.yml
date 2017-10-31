@@ -1,0 +1,20 @@
+---
+
+- name: start bang master server
+  hosts: bangdb_master
+  gather_facts: false
+  roles:
+    - bangdb-master-run
+
+- name: start bang slave server
+  hosts: bangdb_slave
+  gather_facts: false
+  roles:
+    - bangdb-slave-run
+
+- name: check if all bangdb-server are running
+  hosts: all
+  gather_facts: false
+  roles:
+    - bangdb-run-check
+

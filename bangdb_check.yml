@@ -1,0 +1,9 @@
+---
+
+
+- name: check if all bangdb-server are running
+  hosts: all
+  gather_facts: false
+  roles:
+    - bangdb-run-check
+

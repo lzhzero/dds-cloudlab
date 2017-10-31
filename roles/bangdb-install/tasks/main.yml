@@ -1,0 +1,12 @@
+---
+
+- name: copy and untar  BangDB 0.9 binary
+  unarchive:
+    src: bangdb_files/bangdb-cs-linux-64-native-0.9.tar.gz
+    dest: "{{project_dir}}"
+
+- name: modify config maxs_laves
+  lineinfile:
+    path: "{{project_dir}}/bangdb-server/bangdb.config"
+    regexp: '^MAX_SLAVES ='
+    line: 'MAX_SLAVES = {{slave_count}}'

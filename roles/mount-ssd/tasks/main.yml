@@ -1,0 +1,57 @@
+---
+
+- name: set ssd device to host var dev_ssdt
+#  debug: var=item
+  set_fact:
+    dev_ssd: "/dev/{{item.key}}"
+#    msg: "{{item.key}}"
+#  with_item: "{{hostvars[inventory_hostname]['ansible_devices']}}"
+#  when: "not {{item.value.rotational}} and {{item.key}}!='pmem0' "
+  when: (item.value.rotational=='0') and
+        (item.key != "pmem0")
+  with_dict: "{{ansible_devices}}"
+
+
+- name: print ssd dev name
+  debug:
+    var: dev_ssd
+
+
+- name: partition ssd sdc with ext4
+  parted:
+    device: "{{dev_ssd}}"
+    number: 1
+    state: present
+  become: true
+
+- name: format new partition
+  filesystem:
+    fstype: ext4
+    dev: "{{dev_ssd}}1"
+  become: true
+
+- name: mount partition to project dir
+  mount:
+    path: "{{project_dir}}"
+    src: "{{dev_ssd}}1"
+    fstype: ext4
+    state: mounted
+  become: true
+
+- name: mkdir /ssd 777
+  file:
+    path: "{{project_dir}}"
+    state: directory
+    mode: 0777
+  become: true
+
+# No need to fix ntp for BangDB,,, YET
+#- name: fix ntp.conf
+#  import_tasks: other.yml
+#
+#- name: install ntpstat
+#  import_tasks: install.yml
+#
+#- debug:
+#    msg: "new ntpd takes 1-2minutes to sync, use ntpstat to check sync status before proceed"
+

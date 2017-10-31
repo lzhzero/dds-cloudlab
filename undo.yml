@@ -1,0 +1,7 @@
+---
+
+- name: unmount ssd
+  hosts: all
+  gather_facts: false
+  roles:
+    - undo

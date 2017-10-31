@@ -1,0 +1,7 @@
+---
+
+- name: check if bangdb-server is running
+  raw: ps -A | grep bangdb-server
+  register: psout
+  failed_when: "psout.rc==1"
+  changed_when: false   

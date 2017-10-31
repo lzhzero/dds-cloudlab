@@ -1,0 +1,19 @@
+---
+
+
+- name: add apt key for hyperdex
+  apt_key:
+    url: http://ubuntu.hyperdex.org/hyperdex.gpg.key
+    state: present
+
+- name: apt add hyperdex repo
+  apt_repository:
+    repo:  deb [arch=amd64] http://ubuntu.hyperdex.org trusty main
+    state: present
+    filename: hyperdex.list
+    update_cache: yes
+
+- name: install hyperdex
+  apt:
+    name: hyperdex-warp libhyperdex-client-dev-warp python-hyperdex-client-warp vim sysstat mutrace valgrind
+    

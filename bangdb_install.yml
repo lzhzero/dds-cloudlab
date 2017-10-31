@@ -1,0 +1,8 @@
+---
+
+- name: download and install bangdb binary
+  hosts: all
+  gather_facts: false
+  roles:
+    - bangdb-install
+

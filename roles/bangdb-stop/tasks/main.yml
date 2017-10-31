@@ -1,0 +1,4 @@
+---
+
+- name: kill all bangdb-server
+  action: shell pkill bangdb-server

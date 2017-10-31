@@ -1,0 +1,8 @@
+---
+
+- name: download and install hyperdex binary
+  hosts: all
+  gather_facts: false
+  roles:
+    - hyperdex-install
+
