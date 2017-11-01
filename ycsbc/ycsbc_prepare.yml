@@ -1,0 +1,7 @@
+---
+
+- name: generate ips, copy workload files
+  hosts: ycsbc_clients
+  gather_facts: false
+  roles:
+    - ycsbc-prepare

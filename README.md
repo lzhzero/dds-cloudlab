@@ -3,6 +3,16 @@ pre-requisite
 	Note: private key is not there yet.
 
 structure: for each project, a directory is created.
-	dtranx
-	hyperdex
-	bangdb
+	dtranx/
+	hyperdex/
+	bangdb/
+	ycsbc/
+	Bootstrap.sh
+		remote: copy the project and private keys to one machine in the cluster
+		local: run in the cluster machine to set things up.
+
+
+Copyright (c) 2017 University of Colorado Boulder. All rights reserved.
+Developed by: 
+Zhang Liu(zhang.liu@colorado.edu)
+Ning Gao(nigo9731@colorado.edu)
