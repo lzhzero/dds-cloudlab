@@ -38,13 +38,36 @@
     state: mounted
   become: true
 
-- name: mkdir /ssd 777
+- name: chmod /ssd 777
   file:
     path: "{{project_dir}}"
     state: directory
     mode: 0777
   become: true
 
+
+- name: format pmem0
+  filesystem:
+    fstype: ext4
+    dev: /dev/pmem0
+  become: true
+
+- name: mount pmem0 to /mnt/mem
+  mount:
+    path: /mnt/mem
+    src: /dev/pmem0
+    fstype: ext4
+    state: mounted
+    opts: dax
+  become: true
+
+- name: chmod /mnt/mem 777
+  file:
+    path: /mnt
+    state: directory
+    mode: 0777
+    recurse: yes
+  become: true
 # No need to fix ntp for BangDB,,, YET
 #- name: fix ntp.conf
 #  import_tasks: other.yml
