@@ -11,3 +11,6 @@
     src: "{{benchmark_dir}}/ycsbc.out.{{inventory_hostname}}"
     dest: "{{benchmark_dir}}/ycsbc.out.{{inventory_hostname}}"
     flat: yes
+
+- name: clean output
+  command: rm {{benchmark_dir}}/ycsbc.out.{{inventory_hostname}}
