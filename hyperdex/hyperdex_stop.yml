@@ -1,8 +1,22 @@
 ---
 
 - name: check if all hyerdex-server are running
-  hosts: hyperdex_coordinator:hyperdex_daemon
+  hosts: hyperdex_coordinator
   gather_facts: false
-  roles:
-    - hyperdex-stop
+  tasks:
+    - command: pkill -9 replicant-daemon
+      ignore_errors: yes
+    - command: pkill -9 replicant-rsm-dlopen
+      ignore_errors: yes
 
+    - shell: "cd {{project_dir}}/hyperdex ; rm -rf *" 
+      ignore_errors: yes
+
+- name: check if all hyerdex-server are running
+  hosts: hyperdex_daemon
+  gather_facts: false
+  tasks:
+    - command: pkill -9 hyperdex-daemon
+      ignore_errors: yes
+    - shell: "cd {{project_dir}}/hyperdex ; rm -rf *" 
+      ignore_errors: yes
