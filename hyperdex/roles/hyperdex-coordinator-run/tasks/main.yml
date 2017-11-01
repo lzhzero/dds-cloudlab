@@ -1,0 +1,6 @@
+---
+
+- name: run hyperdex coordinator 
+  shell: (nohup hyperdex coordinator -f -l {{inventory_hostname}} -p {{hyperdex_c_port}} --daemon >> hyperdex.coord 2>&1) 
+  args:
+    chdir: "{{project_dir}}/hyperdex"

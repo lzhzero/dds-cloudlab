@@ -1,0 +1,8 @@
+---
+
+- name: check if all hyerdex-server are running
+  hosts: hyperdex_coordinator:hyperdex_daemon
+  gather_facts: false
+  roles:
+    - hyperdex-run-check
+

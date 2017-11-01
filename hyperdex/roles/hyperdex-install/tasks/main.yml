@@ -17,5 +17,19 @@
 
 - name: install hyperdex
   apt:
-    name: hyperdex-warp libhyperdex-client-dev-warp python-hyperdex-client-warp vim sysstat mutrace valgrind
+    name: "{{item}}"
+    update_cache: no
+  with_items:
+    - hyperdex-warp
+    - libhyperdex-client-dev-warp
+    - python-hyperdex-client-warp
+    - vim
+    - sysstat
+    - mutrace
+    - valgrind
   become: true
+
+- name: mkdir for hyperdex logs and data
+  file:
+    path: "{{project_dir}}/hyperdex"
+    state: directory

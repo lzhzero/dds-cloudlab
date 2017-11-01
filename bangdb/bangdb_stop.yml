@@ -1,7 +1,7 @@
 ---
 
 - name: stop bangdb by killing all bangdb-server 
-  hosts: all
+  hosts: bangdb_master:bangdb_slave
   gather_facts: false
   roles:
     - bangdb-stop

@@ -1,0 +1,20 @@
+---
+
+- name: start hyperdex coordinator server
+  hosts: hyperdex_coordinator
+  gather_facts: false
+  roles:
+    - hyperdex-coordinator-run
+
+- name: start hyperdex daemons server
+  hosts: hyperdex_daemon
+  gather_facts: false
+  roles:
+    - hyperdex-daemon-run
+
+- name: check if all hyerdex-server are running
+  hosts: hyperdex_coordinator:hyperdex_daemon
+  gather_facts: false
+  roles:
+    - hyperdex-run-check
+

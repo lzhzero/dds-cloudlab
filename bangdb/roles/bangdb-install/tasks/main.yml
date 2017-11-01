@@ -9,4 +9,4 @@
   lineinfile:
     path: "{{project_dir}}/bangdb-server/bangdb.config"
     regexp: '^MAX_SLAVES ='
-    line: 'MAX_SLAVES = {{slave_count}}'
+    line: 'MAX_SLAVES = {{bangdb_slave_count}}'

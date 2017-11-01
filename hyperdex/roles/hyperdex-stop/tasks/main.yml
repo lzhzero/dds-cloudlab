@@ -1,0 +1,9 @@
+---
+
+- name: kill all hyperdex
+  shell: pkill -9 replicant-daemon
+
+- name: remove everything in hyperdex dir
+  shell: rm *
+  args:
+    chdir: "{{project_dir}}/hyperdex"

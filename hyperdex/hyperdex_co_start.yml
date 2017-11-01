@@ -1,0 +1,8 @@
+---
+
+- name: start hyperdex coordinator server
+  hosts: hyperdex_coordinator
+  gather_facts: false
+  roles:
+    - hyperdex-coordinator-run
+
