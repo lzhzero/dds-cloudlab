@@ -4,10 +4,10 @@
   command: mkdir -p {{benchmark_dir}}
 
 - name: create benchmark directory if not exist
-  raw: rm {{benchmark_dir}}/server.ips; touch {{benchmark_dir}}/server.ips
+  raw: rm {{benchmark_dir}}/{{server_ips_filename}}; touch {{benchmark_dir}}/{{server_ips_filename}}
 
 - name: generate server ips
-  raw: "echo {{item}} >> {{benchmark_dir}}/server.ips"
+  raw: "echo {{item}} >> {{benchmark_dir}}/{{server_ips_filename}}"
   with_items: "{{servers}}"
 
 - name: copy workload files
@@ -15,4 +15,10 @@
     src: "{{item}}"
     dest: "{{benchmark_dir}}"
     mode: 0644
-  with_items: "{{workloads}}"
+  with_items: "{{workloads_path}}"
+
+- name: copy ycsbc program
+  copy:
+    src: "{{ycsbc_path}}"
+    dest: "{{benchmark_dir}}"
+    mode: 0755

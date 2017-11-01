@@ -1,0 +1,13 @@
+---
+
+- name: run ycsb clients
+  raw: >
+    {{benchmark_dir}}/ycsbc -C {{benchmark_dir}}/{{server_ips_filename}} 
+    -threads {{thread}} -db {{db}} -i {{firsttime}} -P {{benchmark_dir}}/{{workload}} 
+    -s {{inventory_hostname}} -s1 {{stable_start}} -s2 {{stable_end}} > {{benchmark_dir}}/ycsbc.out.{{inventory_hostname}} 2>&1
+
+- name: retrieve output
+  fetch: 
+    src: "{{benchmark_dir}}/ycsbc.out.{{inventory_hostname}}"
+    dest: "{{benchmark_dir}}/ycsbc.out.{{inventory_hostname}}"
+    flat: yes
