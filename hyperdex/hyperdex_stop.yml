@@ -4,9 +4,7 @@
   hosts: hyperdex_coordinator
   gather_facts: false
   tasks:
-    - command: pkill -9 replicant-daemon
-      ignore_errors: yes
-    - command: pkill -9 replicant-rsm-dlopen
+    - shell: "kill -9 $(pidof replicant-daemon)"
       ignore_errors: yes
 
     - shell: "cd {{project_dir}}/hyperdex ; rm -rf *" 
@@ -16,7 +14,7 @@
   hosts: hyperdex_daemon
   gather_facts: false
   tasks:
-    - command: pkill -9 hyperdex-daemon
+    - shell: "pkill -9 hyperdex-daemon"
       ignore_errors: yes
     - shell: "cd {{project_dir}}/hyperdex ; rm -rf *" 
       ignore_errors: yes

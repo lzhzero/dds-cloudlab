@@ -1,5 +1,8 @@
 ---
-
+- name: create hyperdex.db
+  file:
+    path: "{{project_dir}}/hyperdex/hyperdex.db"
+    state: directory
 
 - name: run hyperdex daemon
   shell: (hyperdex daemon -f --listen={{inventory_hostname}} -p {{hyperdex_d_port}} --coordinator={{hyperdex_c_ip}} --coordinator-port={{hyperdex_c_port}} --data=hyperdex.db --daemon >> hyperdex.daemon 2>&1)

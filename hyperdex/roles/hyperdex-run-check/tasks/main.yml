@@ -1,7 +1,0 @@
----
-
-- name: check if hyperdex is running
-  raw: ps -ef | grep hyperdex | grep daemon
-  register: psout
-  failed_when: "psout.rc==1"
-  changed_when: false   
