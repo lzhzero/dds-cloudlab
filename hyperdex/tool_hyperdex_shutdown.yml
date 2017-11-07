@@ -1,0 +1,15 @@
+---
+
+#- name: stop all hyperex server and coordinator
+#  hosts: hyperdex_coordinator:hyperdex_daemon
+#  gather_facts: false
+#  roles:
+#    - hyperdex-stop
+
+- name: clean all hyperex server and coordinator except hyperdex.db.bak
+  hosts: hyperdex_coordinator:hyperdex_daemon
+  gather_facts: false
+  roles:
+    - hyperdex-clean
+
+# clean hyperdex.db.bak maybe irrevelant

@@ -1,0 +1,45 @@
+---
+
+- name: copy hash generator and python initializator to hyperdex coordinator
+  copy:
+    src: HashGenerator
+    dest: "{{project_dir}}/hyperdex"
+    mode: u+x
+- name: copy hash generator and python initializator to hyperdex coordinator
+  copy:
+    src: InitializeHyperdex.py
+    dest: "{{project_dir}}/hyperdex"
+    mode: u+x
+- name: copy hash generator and python initializator to hyperdex coordinator
+  copy:
+    src: HyperdexCreateDB.py
+    dest: "{{project_dir}}/hyperdex"
+    mode: u+x
+
+
+- name: modify ip and port of InitializerHyperdex.py
+  lineinfile:
+    path: "{{project_dir}}/hyperdex/InitializeHyperdex.py"
+    regexp: '^a = hyperdex.admin.Admin'
+    line: "a = hyperdex.admin.Admin('{{hyperdex_c_ip}}',{{hyperdex_c_port}})"
+
+- name: modify ip and port of HyperdexCreateDB.py
+  lineinfile:
+    path: "{{project_dir}}/hyperdex/HyperdexCreateDB.py"
+    regexp: '^c = hyperdex.client.Client'
+    line: "c = hyperdex.client.Client('{{hyperdex_c_ip}}',{{hyperdex_c_port}})"
+
+- name: Generate hash
+  shell: ./HashGenerator {{hyperdex_hash_num}} > hashkeys
+  args:
+    chdir: "{{project_dir}}/hyperdex/"
+
+- name: Initialize use python script
+  shell: python HyperdexCreateDB.py; python InitializeHyperdex.py hashkeys
+  args:
+    chdir: "{{project_dir}}/hyperdex/"
+
+- name: make backup of hyperdex.db.bak
+  shell: rm -rf hyperdex.db.bak; cp -R hyperdex.db hyperdex.db.bak
+  args:
+    chdir: "{{project_dir}}/hyperdex/"

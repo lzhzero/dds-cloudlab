@@ -1,0 +1,5 @@
+---
+
+- name: restore hyperdexdb.bak
+  shell: cp -r {{project_dir}}/hyperdex/hyperdex.db.bak {{project_dir}}/hyperdex/hyperdex.db
+

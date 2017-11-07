@@ -1,0 +1,34 @@
+---
+
+- name: stop all hyperex server and coordinator
+  hosts: hyperdex_coordinator|hyperde_daemon
+  gather_facts: false
+  roles:
+    - hyperdex-stop
+
+
+# NOTE: coordinator will be cleaned twice, but it is ok so far
+- name: clean all hyperex server and coordinator except hyperdex.db.bak
+  hosts: hyperdex_coordinator|hyperde_daemon
+  gather_facts: false
+  roles:
+    - hyperdex-clean
+
+- name: restore hyperdex.db.bak
+  hosts: hyperdex_coordinator|hyperde_daemon
+  gather_facts: false
+  roles:
+    - hyperdex-restore
+
+
+- name: start hyperdex coordinator server
+  hosts: hyperdex_coordinator
+  gather_facts: false
+  roles:
+    - hyperdex-coordinator-run
+
+- name: start hyperdex daemons server
+  hosts: hyperdex_coordinator|hyperdex_daemon
+  gather_facts: false
+  roles:
+    - hyperdex-daemon-run 

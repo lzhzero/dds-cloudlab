@@ -1,9 +1,10 @@
 ---
 
-- name: kill all hyperdex
-  shell: pkill -9 replicant-daemon
+- name: kill all hyperdex daemon
+  shell: "pkill -9 yperdex-daemon"
+  ignore_errors: yes
 
-- name: remove everything in hyperdex dir
-  shell: rm *
-  args:
-    chdir: "{{project_dir}}/hyperdex"
+- name: kill hyperdex coordinator
+  shell: "kill -9 $(pidof replicant-daemon)"
+  when: "{{inventory_hostname}} in hyperdex_coordinator"
+  ignore_errors: yes

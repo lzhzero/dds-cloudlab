@@ -1,0 +1,15 @@
+---
+
+- name: check if all hyerdex-server are running
+  hosts: hyperdex_coordinator
+  gather_facts: false
+  tasks:
+    - shell: "cd {{project_dir}}/hyperdex ; rm -rf *~(hyperdex.db)" 
+#      ignore_errors: yes
+
+- name: check if all hyerdex-server are running
+  hosts: hyperdex_daemon
+  gather_facts: false
+  tasks:
+    - shell: "cd {{project_dir}}/hyperdex ; rm -rf *~(hyperdex.db)" 
+#      ignore_errors: yes

@@ -1,0 +1,9 @@
+---
+
+- name: clean hyperex folder except hyperdex.db.bak
+  shell: rm -rf "!("hyperdex.db.bak")"
+  args:
+    chdir: "{{project_dir}}/hyperdex"
+    executable: /bin/bash
+  ignore_errors: yes
+

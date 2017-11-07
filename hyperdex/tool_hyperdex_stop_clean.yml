@@ -7,8 +7,14 @@
     - shell: "kill -9 $(pidof replicant-daemon)"
       ignore_errors: yes
 
+#    - shell: "cd {{project_dir}}/hyperdex ; rm -rf !(hyperdex.db.bak)" 
+#      ignore_errors: yes
+
+- name: check if all hyerdex-server are running
   hosts: hyperdex_daemon
   gather_facts: false
   tasks:
     - shell: "pkill -9 hyperdex-daemon"
+      ignore_errors: yes
+    - shell: "cd {{project_dir}}/hyperdex ; rm -rf !(hyperdex.db.bak)" 
       ignore_errors: yes

@@ -12,6 +12,12 @@
   roles:
     - hyperdex-daemon-run
 
+- name: Init hyperdex, backup hyperdex.db.bak
+  hosts: hyperdex_coordinator
+  gather_facts: false
+  roles:
+    - hyperdex-init
+
 - name: check if all hyerdex-server are running
   hosts: hyperdex_coordinator
   gather_facts: false
@@ -20,12 +26,12 @@
       register: psout
       failed_when: "psout.rc==1"
       changed_when: false
+
 - name: check if all hyerdex-server are running
-  hosts: hyperdex_daemon
+  hosts: hyperdex_coordinator|hyperdex_daemon
   gather_facts: false
   tasks:
     - raw: ps -A | grep hyperdex
       register: psout
       failed_when: "psout.rc==1"
       changed_when: false
-~
