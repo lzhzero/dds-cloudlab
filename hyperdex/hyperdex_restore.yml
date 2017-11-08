@@ -15,7 +15,7 @@
     - hyperdex-clean
 
 - name: restore hyperdex.db.bak
-  hosts: hyperdex_coordinator:hyperdex_daemon
+  hosts: hyperdex_daemon
   gather_facts: false
   roles:
     - hyperdex-restore
@@ -28,7 +28,7 @@
     - hyperdex-coordinator-run
 
 - name: start hyperdex daemons server
-  hosts: hyperdex_coordinator:hyperdex_daemon
+  hosts: hyperdex_daemon
   gather_facts: false
   roles:
     - hyperdex-daemon-run 

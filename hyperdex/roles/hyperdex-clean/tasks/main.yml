@@ -1,9 +1,22 @@
 ---
-
 - name: clean hyperex folder except hyperdex.db.bak
-  shell: rm -rf \!\(hyperdex.db.bak\)
+  shell: find . -maxdepth 1 -not -name hyperdex.db.bak -delete
+#  shell: "shopt -s extglob; rm -rf '!(hyperdex.db.bak)'"
   args:
     chdir: "{{project_dir}}/hyperdex"
-#    executable: /bin/bash
+    executable: /bin/bash
   ignore_errors: yes
 
+
+#- name: find all files/folders inside hyperdex
+#  find:
+#    path: "{{project_dir}}/hyperdex"
+#  register: hyperdex_files
+
+#- name: Remove all except hyperdex.db.bak
+#  file:
+#    path: "{{item.path}}"
+#    state: absent
+#  when: '"hyperdex.db.bak" not in item.path'
+#  with_items: "{{hyperdex_files.files}}"
+ 

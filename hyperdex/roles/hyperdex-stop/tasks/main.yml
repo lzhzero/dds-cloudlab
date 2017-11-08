@@ -1,10 +1,10 @@
 ---
 
 - name: kill all hyperdex daemon
-  shell: "pkill -9 yperdex-daemon"
+  shell: "pkill -9 hyperdex-daemon"
   ignore_errors: yes
 
 - name: kill hyperdex coordinator
   shell: "kill -9 $(pidof replicant-daemon)"
-  when: "{{inventory_hostname}} in hyperdex_coordinator"
+  when: inventory_hostname in groups['hyperdex_coordinator']
   ignore_errors: yes

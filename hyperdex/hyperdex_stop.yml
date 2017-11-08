@@ -1,14 +1,7 @@
 ---
 
-- name: check if all hyerdex-server are running
-  hosts: hyperdex_coordinator
+- name: stop all hyperex server and coordinator
+  hosts: hyperdex_coordinator:hyperdex_daemon
   gather_facts: false
-  tasks:
-    - shell: "kill -9 $(pidof replicant-daemon)"
-      ignore_errors: yes
-
-  hosts: hyperdex_daemon
-  gather_facts: false
-  tasks:
-    - shell: "pkill -9 hyperdex-daemon"
-      ignore_errors: yes
+  roles:
+    - hyperdex-stop
