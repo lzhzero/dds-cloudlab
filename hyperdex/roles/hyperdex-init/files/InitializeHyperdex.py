@@ -3,7 +3,7 @@ import hyperdex.client
 import sys
 # TODO: organize the initialization for hyperdex tests
 c = hyperdex.client.Client('192.168.0.1',7777)
-SPACE = "dds-space"
+SPACE = "test"
 if len(sys.argv) != 2:
 	print "first argument should be filename"
 	exit()

@@ -1,0 +1,6 @@
+---
+
+- name: make backup of hyperdex.db.bak
+  shell: rm -rf hyperdex.db.bak; cp -R hyperdex.db hyperdex.db.bak
+  args:
+    chdir: "{{project_dir}}/hyperdex/"

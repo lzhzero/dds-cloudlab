@@ -1,6 +1,6 @@
 ---
 
-- name: check if all hyerdex-server are running
+- name: check if hyerdex coordinator is running
   hosts: hyperdex_coordinator
   gather_facts: false
   tasks:
@@ -8,7 +8,7 @@
       register: psout
       failed_when: "psout.rc==1"
       changed_when: false
-- name: check if all hyerdex-server are running
+- name: check if all hyerdex daemons are running
   hosts: hyperdex_daemon
   gather_facts: false
   tasks:

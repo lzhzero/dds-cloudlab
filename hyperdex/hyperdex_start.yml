@@ -12,13 +12,19 @@
   roles:
     - hyperdex-daemon-run
 
-- name: Init hyperdex, backup hyperdex.db.bak
+- name: Init hyperdex coordinator
   hosts: hyperdex_coordinator
   gather_facts: false
   roles:
     - hyperdex-init
 
-- name: check if all hyerdex-server are running
+- name: Backup hyperdex.db.bak on daemons
+  hosts: hyperdex_daemon
+  gather_facts: false
+  roles:
+    - hyperdex-backup
+
+- name: check if hyerdex coordinator running
   hosts: hyperdex_coordinator
   gather_facts: false
   tasks:
@@ -27,8 +33,8 @@
       failed_when: "psout.rc==1"
       changed_when: false
 
-- name: check if all hyerdex-server are running
-  hosts: hyperdex_coordinator|hyperdex_daemon
+- name: check if all hyerdex daemons  are running
+  hosts: hyperdex_daemon
   gather_facts: false
   tasks:
     - raw: ps -A | grep hyperdex
