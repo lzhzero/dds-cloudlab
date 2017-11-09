@@ -1,16 +1,33 @@
 ---
+# user bash to calculate throughput and latency
 
-- name: run ycsb clients
-  raw: >
-    {{benchmark_dir}}/ycsbc -C {{benchmark_dir}}/{{server_ips_filename}} 
-    -threads {{thread}} -db {{db}} -i {{firsttime}} -P {{benchmark_dir}}/{{workload}} 
-    -s {{inventory_hostname}} -s1 {{stable_start}} -s2 {{stable_end}} > {{benchmark_dir}}/ycsbc.out.{{inventory_hostname}} 2>&1
+- name: remove existing throughput files if exist
+  file:
+    path: "{{benchmark_dir}}/{{db}}_{{item}}_list"
+    state: absent
+  with_items:
+    - "throughput"
+    - "latency"
 
-- name: retrieve output
-  fetch: 
-    src: "{{benchmark_dir}}/ycsbc.out.{{inventory_hostname}}"
-    dest: "{{benchmark_dir}}/ycsbc.out.{{inventory_hostname}}"
-    flat: yes
 
-- name: clean output
-  command: rm {{benchmark_dir}}/ycsbc.out.{{inventory_hostname}}
+- name: aggregate throughput file
+  shell: grep -n workload ycsbc.out.{{item}} | awk '{print $3}' >> {{db}}_throughput_list
+  args:
+    chdir: "{{benchmark_dir}}"
+  with_items: "{{groups['ycsbc_clients']}}" 
+
+- name: calc total throughput
+  shell: awk '{s+=$1} END {print s}' hyperdex_throughput_list > {{db}}_throughput_total
+  args:
+    chdir: "{{benchmark_dir}}"
+
+- name: aggregate latency file
+  shell: grep -n latency ycsbc.out.{{item}} | awk '{print $2}' >> {{db}}_latency_list
+  args:
+    chdir: "{{benchmark_dir}}"
+  with_items: "{{groups['ycsbc_clients']}}" 
+
+- name: calc avg latency
+  shell: awk '{s+=$1} END {print s/NR}' hyperdex_latency_list > {{db}}_latency_avg
+  args:
+    chdir: "{{benchmark_dir}}"
