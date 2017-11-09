@@ -1,0 +1,7 @@
+---
+
+- name: analyze throughput and latency from ycsbc.output.hostname 
+  hosts: localhost
+  gather_facts: false
+  roles:
+    - ycsbc-analyzer1

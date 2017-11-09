@@ -1,6 +1,6 @@
 ---
 - name: clean hyperex folder except hyperdex.db.bak
-  shell: find . -maxdepth 1 -not -name hyperdex.db.bak -delete
+  shell: find . -maxdepth 1 -not -name hyperdex.db.bak -exec rm -rf {} +
 #  shell: "shopt -s extglob; rm -rf '!(hyperdex.db.bak)'"
   args:
     chdir: "{{project_dir}}/hyperdex"

@@ -15,10 +15,11 @@
     src: "{{item}}"
     dest: "{{benchmark_dir}}"
     mode: 0644
-  with_items: "{{workloads_path}}"
+#  with_items: "{{workloads_path}}"
+  with_fileglob: "{{workload_files}}"
 
 - name: copy ycsbc program
   copy:
-    src: "{{ycsbc_path}}"
+    src: ycsbc
     dest: "{{benchmark_dir}}"
     mode: 0755
