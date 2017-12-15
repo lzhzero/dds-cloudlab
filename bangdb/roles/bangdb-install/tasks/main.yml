@@ -10,3 +10,9 @@
     path: "{{project_dir}}/bangdb-server/bangdb.config"
     regexp: '^MAX_SLAVES ='
     line: 'MAX_SLAVES = {{bangdb_slave_count}}'
+
+- name: modify transaction type
+  lineinfile:
+    path: "{{project_dir}}/bangdb-server/bangdb.config"
+    regexp: '^DB_TRAN_TYPE ='
+    line: 'DB_TRAN_TYPE = DB_OPTIMISTIC_TRANSACTION'
