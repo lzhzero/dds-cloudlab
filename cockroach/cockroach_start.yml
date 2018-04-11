@@ -1,0 +1,13 @@
+---
+
+- name: start cockroach first node
+  hosts: cockroach_first_node
+  gather_facts: false
+  roles:
+    - cockroach-first-start
+
+- name: start cockroach other nodes
+  hosts: cockroach_other_nodes
+  gather_facts: false
+  roles:
+    - cockroach-others-start

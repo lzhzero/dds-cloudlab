@@ -1,0 +1,10 @@
+---
+
+- name: stop all cocoroachDB processes
+  hosts: all
+  gather_facts: false
+  tasks:
+    - shell: "pkill -9 cockroach"
+      ignore_errors: yes
+    - shell: "rm -rf {{cockroach_dir}}/cockroach-data"
+      ignore_errors: yes

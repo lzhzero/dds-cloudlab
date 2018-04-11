@@ -1,0 +1,13 @@
+---
+
+- name: make dir for cockroach db
+  file:
+    path: "{{cockroach_dir}}"
+    state: directory
+
+- name: copy cockraoch binary
+  copy:
+    src: cockroach
+    dest: "{{cockroach_dir}}/"
+    mode: 0755
+ 

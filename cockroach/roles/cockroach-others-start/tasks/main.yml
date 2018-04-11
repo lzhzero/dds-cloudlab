@@ -1,0 +1,8 @@
+---
+
+- name: start cockroachDB other nodes
+#  shell: (nohup cockroach start --insecure --host=localhost --join=192.168.0.1:26257 >> cockroach.log 2>&1)
+  shell: (./cockroach start --insecure --host={{inventory_hostname}} --join={{cockroach_initial_ip}}:26257 &> log &)
+  args:
+    chdir: "{{cockroach_dir}}"
+

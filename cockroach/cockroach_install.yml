@@ -1,0 +1,8 @@
+---
+
+- name: Install cockroach release 2.0.0
+  hosts: all
+  gather_facts: false
+  roles:
+    - cockroach-install
+

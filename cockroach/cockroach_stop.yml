@@ -1,0 +1,8 @@
+---
+
+- name: stop all cocoroachDB processes
+  hosts: all
+  gather_facts: false
+  tasks:
+    - shell: "pkill -9 cockroach"
+      ignore_errors: yes

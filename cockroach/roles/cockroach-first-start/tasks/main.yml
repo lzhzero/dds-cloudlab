@@ -1,0 +1,7 @@
+---
+
+- name: start cockroachDB first node
+  shell: (./cockroach start --insecure --host={{inventory_hostname}} >> cockroach.log &> log &)
+  args:
+    chdir: "{{cockroach_dir}}"
+
