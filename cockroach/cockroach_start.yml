@@ -11,3 +11,10 @@
   gather_facts: false
   roles:
     - cockroach-others-start
+
+- name: start cockroach first node
+  hosts: cockroach_first_node
+  gather_facts: false
+  roles:
+    - cockroach-setup
+

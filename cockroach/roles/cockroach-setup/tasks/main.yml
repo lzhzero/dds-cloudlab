@@ -1,0 +1,22 @@
+---
+
+- name: setup db user 'ycsb' for testing
+  shell: (./cockroach user set ycsb --insecure --host={{ inventory_hostname }})
+  args:
+    chdir: "{{cockroach_dir}}"
+
+- name: setup db 'ycsb' for testing
+  shell: (./cockroach sql -e 'CREATE DATABASE ycsb;' --insecure --host={{ inventory_hostname }})
+  args:
+    chdir: "{{cockroach_dir}}"
+
+- name: setup access privileges
+  shell: (./cockroach sql -e 'GRANT ALL ON DATABASE ycsb TO ycsb;' --insecure --host={{ inventory_hostname }})
+  args:
+    chdir: "{{cockroach_dir}}"
+
+- name: setup table 'kv' as key value store interface
+  shell: (./cockroach sql -e 'USE ycsb; CREATE TABLE kv (key BYTES PRIMARY KEY, value BYTES);' --insecure --host={{ inventory_hostname }})
+  args:
+    chdir: "{{cockroach_dir}}"
+
