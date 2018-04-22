@@ -1,0 +1,4 @@
+# TODO:
+#     1. update the local logcabin conf file: follow the 172-174 lines in Deploy.py in DTranx project
+#     2. run logcabin service: follow the 100-107 lines in Deploy.py in Logcabin project
+#                    both prepare and start mode, like the 179-182 lines in Deploy.py in DTranx project

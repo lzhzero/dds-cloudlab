@@ -1,0 +1,7 @@
+---
+
+- name: kill and clean the dtranx services in the cluster
+  hosts: dtranx_all
+  gather_facts: true
+  roles:
+    - kill-dtranx

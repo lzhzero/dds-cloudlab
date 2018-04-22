@@ -1,0 +1,3 @@
+# TODO:
+#     1. install locally: follow the 188-195 lines in EnvSetup.py in DTranx project
+#     2. install remotely: copy the libdtranx.a and libdtranx.so to remote cluster servers under /usr/local/lib/ directory

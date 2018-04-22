@@ -1,18 +1,28 @@
-pre-requisite
-	Cloudlab image: DTranx library, YCSB library, ansible installation files
-	Note: private key is not there yet.
+Pre-Requisite  
+* Cloudlab image: 
+Dependent libraries such as protobuf, unwind, crypto, profiler, boost, metis, leveldb, tcmalloc. details are in wiki pages.   
+Our projects installation: zeromq, logcabin, pmem, dtranx.  
+Kernel is modified to support PMEM.   
+Open file limit is adjusted.  
+Files are copied: ansible installation files.  
+* Note: private key is not there yet.  
 
-structure: for each project, a directory is created.
-	dtranx/
-	hyperdex/
-	bangdb/
-	ycsbc/
-	Bootstrap.sh
-		remote: copy the project and private keys to one machine in the cluster
-		local: run in the cluster machine to set things up.
+Files: for each project, a directory is created.
+* dtranx/  
+* hyperdex/  
+* bangdb/  
+* ycsbc/  
+* Bootstrap.sh: 
 
+Steps:
+* Run Bootstrap.sh in both two modes
+* Update the ip addresses of the cluster servers in inventory.ini
+* Run ansible scripts in the cluster
+```
+		ansible-playbook *.yml
+```
 
-Copyright (c) 2017 University of Colorado Boulder. All rights reserved.
-Developed by: 
-Zhang Liu(zhang.liu@colorado.edu)
-Ning Gao(nigo9731@colorado.edu)
+Copyright (c) 2017 University of Colorado Boulder. All rights reserved.  
+Developed by:  
+Zhang Liu(zhang.liu@colorado.edu)  
+Ning Gao(nigo9731@colorado.edu)  

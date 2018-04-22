@@ -1,0 +1,7 @@
+---
+
+- name: install the dynamic and static libraries of logcabin in both local machine and the cluster
+  hosts: logcabin_all
+  gather_facts: true
+  roles:
+    - install-library

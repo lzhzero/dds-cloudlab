@@ -1,0 +1,7 @@
+---
+
+- name: kill and clean the logcabin daemon services in the cluster
+  hosts: logcabin_all
+  gather_facts: true
+  roles:
+    - kill-logcabin
