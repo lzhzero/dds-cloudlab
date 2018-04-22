@@ -14,3 +14,6 @@
 
 - name: clean output
   command: rm {{benchmark_dir}}/ycsbc.out.{{inventory_hostname}}
+
+  #TODO:
+  #   1. check if inventory_hostname is resolved to 192.network or 128.network

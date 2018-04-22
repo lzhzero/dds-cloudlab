@@ -31,3 +31,9 @@
   shell: awk '{s+=$1} END {print s/NR}' hyperdex_latency_list > {{db}}_latency_avg
   args:
     chdir: "{{benchmark_dir}}"
+
+
+#TODO:
+#   1. Is the aggregate throughput/latency tasks tested yet?
+#   2. In the total throughput/avg latency, why is the name *hyperdex*?
+#   3. Add instant throughput aggregate, follow the lines 103-144 in TestAnalyzer.py in DTranx project

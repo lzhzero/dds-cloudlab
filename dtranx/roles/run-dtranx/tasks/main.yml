@@ -1,4 +1,5 @@
 # TODO:
 #     1. update the local dtranx conf file: follow the 183-191 lines in Deploy.py in DTranx project
 #           among the configurations, InitializeDB and PerfLog might be dynamically adjusted during the perf tests, so highlight these configurations
-#     2. run dtranx service: follow the 193-214 lines in Deploy.py in DTranx project
+#     2. make it configurable as whether to recover the backup database or not. Follow the 48-80 lines in TestHelper.py in DTranx project
+#     3. run dtranx service: follow the 193-214 lines in Deploy.py in DTranx project

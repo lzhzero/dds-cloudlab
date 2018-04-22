@@ -6,3 +6,5 @@
   roles:
     - ycsbc-prepare
 
+# TODO: 
+#   1. adjust operation count in the workload spec files

@@ -1,0 +1,7 @@
+---
+
+- name: kill and clean the ycsbc program
+  hosts: ycsbc_clients
+  gather_facts: false
+  roles:
+    - ycsbc-kill

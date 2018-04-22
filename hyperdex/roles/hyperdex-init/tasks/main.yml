@@ -1,5 +1,7 @@
 ---
 
+# HashGenerator, HyperdexCreateDB,py, and InitializeHyperdex,py are copied from YCSBC project.
+
 - name: copy hash generator and python initializator to hyperdex coordinator
   copy:
     src: HashGenerator

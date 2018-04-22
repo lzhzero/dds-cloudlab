@@ -1,6 +1,6 @@
 Pre-Requisite  
 * Cloudlab image: 
-Dependent libraries such as protobuf, unwind, crypto, profiler, boost, metis, leveldb, tcmalloc. details are in wiki pages.   
+Dependent libraries such as protobuf, unwind, crypto, profiler, boost, metis, leveldb, tcmalloc, tbb. details are in wiki pages.   
 Our projects installation: zeromq, logcabin, pmem, dtranx.  
 Kernel is modified to support PMEM.   
 Open file limit is adjusted.  
