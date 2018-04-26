@@ -1,3 +1,14 @@
-# TODO:
-#     1. install locally: follow the 188-195 lines in EnvSetup.py in DTranx project
-#     2. install remotely: copy the libdtranx.a and libdtranx.so to remote cluster servers under /usr/local/lib/ directory
+#	assume Dtranx src is already located in ~/
+- name: install dtranx libries
+  copy:
+    src: "{{dtranx_src_dir}}/{{ item.src }}"
+    dest: "{{ item.dest }}"
+  with_items:
+    - { src:'include/DTranx', dest:'/usr/local/include/')
+    - { src:'Build/libdtranx.a', dest:'/usr/local/lib/')
+    - { src:'Build/libdtranx.so', dest:'/usr/local/lib')
+    - { src:'Build/DTranx', dest:"{{dtranx_dir}}/")
+  become: true
+
+- name: sudo ldconfig
+  shell: sudo ldconfig

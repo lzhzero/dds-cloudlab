@@ -2,3 +2,8 @@
 #     1. kill the dtranx processes: follow the 151-158 lines in Deploy.py in DTranx project
 #         it calls the Clean.sh in DTranx project; do not forget that there is the choice of whether to clean the databases. Make it configurable as whether to make a backup copy of the database or not. Follow the 48-80 lines in TestHelper.py in DTranx project
 #         the clean.sh also cleans the Logcabin and maybe we don't need it here since we already have the cleaning playbook in logcabin directory
+
+---
+- name: kill dtranx process part 1
+  shell: "sudo kill -9 $(pidof DTranx)"
+  ignore_errors: yes

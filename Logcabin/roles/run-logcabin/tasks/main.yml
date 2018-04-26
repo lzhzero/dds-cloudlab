@@ -1,4 +1,22 @@
 # TODO:
-#     1. update the local logcabin conf file: follow the 172-174 lines in Deploy.py in DTranx project
-#     2. run logcabin service: follow the 100-107 lines in Deploy.py in Logcabin project
 #                    both prepare and start mode, like the 179-182 lines in Deploy.py in DTranx project
+#		     ~~~~~~~~~~~~~~~~~~~~~~~~~~~ what does this mean?
+
+---
+- name: copy LogCabin.conf to remove
+  copy:
+    src: LogCabin.conf
+    dest: "{{logcabin_dir}}"
+
+- name: modify LogCabin.conf with storagepath parameter
+  lineinfile:
+    path: "{{logcabin_dir}}/LogCabin.conf"
+    line: "storagePath = {{logcabin_dir}}/Logcabinlog"
+
+- name: clear Logcabinlog directory
+  shell: "rm -rf {{logcabin_dir}}/Logcabinlog"
+
+- name: run logcabin service
+  shell: (LogCabin -c LogCabin.conf &)
+  args:
+    chdir: "{{logcabin_dir}}"

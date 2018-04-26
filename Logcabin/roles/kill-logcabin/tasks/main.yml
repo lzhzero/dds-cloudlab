@@ -1,3 +1,6 @@
-# TODO:
-#     1. kill the logcabin processes: follow the 113-114 lines in Deploy.py in Logcabin project
+---
+- name: kill logcabin process part 1
+  shell: "sudo kill -9 $(-ef|grep LogCabin|head -n 1|awk '{print $2}')"
 
+- name: kill logcabin process part 2
+  shell: "sudo kill -9 $(-ef|grep LogCabin|tail -n 1|awk '{print $2}')"

@@ -1,3 +1,6 @@
+#TODO: put related src dirs on remote node.
+
+
 # Bootstrap.sh prepares the cluster before ansible scripts are run.
 # It consists of two setps. First, run Bootstrap.sh in remote mode from outside the cluster and chooses
 # one ansible master server in the cluster. Second, run it in local mode in the ansible master.
