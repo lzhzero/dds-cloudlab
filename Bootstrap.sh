@@ -15,12 +15,48 @@ if [ $1 == "remote" ];then
 	read remoteIP
 	echo "input local private key path:(default: ~/.ssh/cloudlab.pri)"
 	read prikeyPath
+	eval prikeyPath=$prikeyPath
 	if [[ -z $prikeyPath ]];then
 		prikeyPath="$HOME/.ssh/cloudlab.pri"
 	fi
-	rsync -avz ../dds-cloudlab --exclude .git $remoteIP:~/
-	rsync $prikeyPath $remoteIP:~/
+	rsync -avz -e "ssh -i $prikeyPath" ../dds-cloudlab --exclude .git $remoteIP:~/
+	scp -i $prikeyPath $prikeyPath $remoteIP:~/cloudlab.pri
+
+	echo "Copy dtranx related files"
+	ssh -i $prikeyPath $remoteIP "mkdir -p ~/DTranx/include"
+	ssh -i $prikeyPath $remoteIP "mkdir -p ~/DTranx/Build"
+	scp -i $prikeyPath -r ../DTranx/include/DTranx $remoteIP:~/DTranx/include/
+	scp -i $prikeyPath -r ../DTranx/Build/libdtranx.a $remoteIP:~/DTranx/Build/
+	scp -i $prikeyPath -r ../DTranx/Build/libdtranx.so $remoteIP:~/DTranx/Build/
+	scp -i $prikeyPath -r ../DTranx/Build/DTranx $remoteIP:~/DTranx/Build/
+
+	echo "Copy logcabin related files"
+
+	ssh -i $prikeyPath $remoteIP "mkdir -p ~/Logcabin/Client"
+	ssh -i $prikeyPath $remoteIP "mkdir -p ~/Logcabin/RPC/zeromq"
+	ssh -i $prikeyPath $remoteIP "mkdir -p ~/Logcabin/build"
+	scp -i $prikeyPath -r ../Logcabin/Client/Client.h $remoteIP:~/Logcabin/Client/
+	scp -i $prikeyPath -r ../Logcabin/Client/ClientDataStructure.h $remoteIP:~/Logcabin/Client/
+	scp -i $prikeyPath -r ../Logcabin/Client/DataStore.h $remoteIP:~/Logcabin/Client/
+	scp -i $prikeyPath -r ../Logcabin/Client/KDTree.h $remoteIP:~/Logcabin/Client/
+	scp -i $prikeyPath -r ../Logcabin/RPC/DaemonSendHelper.h $remoteIP:~/Logcabin/RPC/
+	scp -i $prikeyPath -r ../Logcabin/RPC/zeromq/ZeromqDaemonSend.h $remoteIP:~/Logcabin/RPC/zeromq/
+	scp -i $prikeyPath -r ../Logcabin/build/liblogcabin.a $remoteIP:~/Logcabin/build/
+	scp -i $prikeyPath -r ../Logcabin/build/liblogcabin.so $remoteIP:~/Logcabin/build/
+	scp -i $prikeyPath -r ../Logcabin/build/LogCabin $remoteIP:~/Logcabin/build/
+
+	echo "Copy ycsbc related files"
+
+	ssh -i $prikeyPath $remoteIP "mkdir -p ~/YCSB-C-DTranx"
+	scp -i $prikeyPath -r ../YCSB-C-DTranx/ycsbc $remoteIP:~/YCSB-C-DTranx/
+	scp -i $prikeyPath -r ../YCSB-C-DTranx/workloads/*.spec $remoteIP:~/YCSB-C-DTranx/
+	
+	echo "Copy missing libs"
+	ssh -i $prikeyPath $remoteIP "mkdir -p ~/libs/"
+	scp -i $prikeyPath -r ../libs/* $remoteIP:~/libs/
 	echo "Complete"
+
+
 elif [ $1 == "local" ];then
 	echo "IdentityFile ~/cloudlab.pri" >> ~/.ssh/config
 	echo "StrictHostKeyChecking no" >> ~/.ssh/config

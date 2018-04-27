@@ -2,6 +2,6 @@
 
 - name: install the dynamic and static libraries of dtranx in both local machine and the cluster
   hosts: dtranx_all
-  gather_facts: true
+  gather_facts: false
   roles:
     - install-library

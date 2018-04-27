@@ -1,0 +1,7 @@
+---
+
+- name: mount ssd and fix ntp and others
+  hosts: all
+  gather_facts: true
+  roles:
+    - mount-ssd-pmem0

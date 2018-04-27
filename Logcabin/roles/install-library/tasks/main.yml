@@ -1,3 +1,7 @@
+# TODO:
+#     1. install locally: follow the 115-130 lines in Deploy.py in Logcabin project
+#     2. install remotely: follow the 33 line in EnvSetup.py in DTranx project 
+
 #     assume logcabin src is already located in ~/
 ---
 - name: install logcabin libries
@@ -5,16 +9,21 @@
     src: "{{logcabin_src_dir}}/{{ item.src }}"
     dest: "{{ item.dest }}"
   with_items:
-    - { src:'Client/Client.h', dest:'/usr/local/include/logcabin/Client/'}
-    - { src:'Client/ClientDataStructure.h', dest:'/usr/local/include/logcabin/Client/'}
-    - { src:'Client/DataStore.h', dest:'/usr/local/include/logcabin/Client/'}
-    - { src:'Client/KDTree.h', dest:'/usr/local/include/logcabin/Client/'}
-    - { src:'RPC/DaemonSendHelper.h', dest:'/usr/local/include/logcabin/RPC/'}
-    - { src:'RPC/zeromq/ZeromqDaemonSend.h', dest:'/usr/local/include/logcabin/RPC/zeromq/'}
-    - { src:'build/liblogcabin.a', dest:'/usr/local/lib/'}
-    - { src:'build/liblogcabin.so', dest:'/usr/local/lib/'}
-    - { src:'build/LogCabin', dest:'{{logcabin_dir}}'}
+    - { src: 'Client/Client.h', dest: '/usr/local/include/logcabin/Client/'}
+    - { src: 'Client/ClientDataStructure.h', dest: '/usr/local/include/logcabin/Client/'}
+    - { src: 'Client/DataStore.h', dest: '/usr/local/include/logcabin/Client/'}
+    - { src: 'Client/KDTree.h', dest: '/usr/local/include/logcabin/Client/'}
+    - { src: 'RPC/DaemonSendHelper.h', dest: '/usr/local/include/logcabin/RPC/'}
+    - { src: 'RPC/zeromq/ZeromqDaemonSend.h', dest: '/usr/local/include/logcabin/RPC/zeromq/'}
+    - { src: 'build/liblogcabin.a', dest: '/usr/local/lib/'}
+    - { src: 'build/liblogcabin.so', dest: '/usr/local/lib/'}
   become: true
 
-- name sudo ldconfig
+- name: install logcabin binary
+  copy:
+    src: "{{logcabin_src_dir}}/build/LogCabin"
+    dest: "{{logcabin_dir}}/"
+    mode: preserve
+
+- name: sudo ldconfig
   shell: sudo ldconfig

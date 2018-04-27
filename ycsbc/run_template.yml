@@ -1,0 +1,12 @@
+---
+
+- name: run ycsbc clients
+  hosts: ycsbc_clients
+  gather_facts: false
+  roles:
+    - ycsbc-run
+  vars:
+    thread: 200
+    db: dtranx
+    stable_start: 1000
+    stable_end: 4000

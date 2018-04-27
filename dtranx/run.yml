@@ -2,6 +2,6 @@
 
 - name: run DTranx service
   hosts: dtranx_all
-  gather_facts: true
+  gather_facts: false
   roles:
     - run-dtranx

@@ -1,0 +1,22 @@
+# TODO:
+#     1. update the local logcabin conf file: follow the 172-174 lines in Deploy.py in DTranx project
+#     2. run logcabin service: follow the 100-107 lines in Deploy.py in Logcabin project
+#                    both prepare and start mode, like the 179-182 lines in Deploy.py in DTranx project
+
+---
+- name: copy LogCabin.conf to remove
+  copy:
+    src: LogCabin.conf
+    dest: "{{logcabin_dir}}/"
+
+- name: modify LogCabin.conf with storagepath parameter
+  lineinfile:
+    path: "{{logcabin_dir}}/LogCabin.conf"
+    line: "storagePath = {{logcabin_dir}}/Logcabinlog"
+
+- name: fix symbolic link for libstdc++-6
+  file:
+    src: "/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21"
+    dest: "/usr/lib/x86_64-linux-gnu/libstdc++.so.6"
+    state: link
+  become: true

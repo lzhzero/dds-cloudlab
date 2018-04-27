@@ -1,0 +1,7 @@
+---
+- name: clea datastructure
+  shell: "{{item}}"
+  with_items:
+    - "rm -rf {{logcabin_dir}}/Logcabinlog"
+
+

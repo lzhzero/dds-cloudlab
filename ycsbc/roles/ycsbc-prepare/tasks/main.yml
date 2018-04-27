@@ -12,14 +12,32 @@
 
 - name: copy workload files
   copy:
-    src: "{{item}}"
+    src: "{{ycsb_src_dir}}/{{item}}"
     dest: "{{benchmark_dir}}"
     mode: 0644
 #  with_items: "{{workloads_path}}"
-  with_fileglob: "{{workload_files}}"
+  with_items: "{{workload_files}}"
 
 - name: copy ycsbc program
   copy:
-    src: ycsbc
+    src: "{{ycsb_src_dir}}/ycsbc"
     dest: "{{benchmark_dir}}"
     mode: 0755
+
+- name: install related libs
+  copy:
+    src: "{{item}}"
+    dest: /usr/local/lib
+  with_fileglob:
+    - "{{libs_dir}}/*"
+  become: true
+
+- name: sudo ldconfig
+  shell: sudo ldconfig
+
+
+- name: apt install libpq5
+  apt:
+    name: libpq5
+    update_cache: yes
+  become: true

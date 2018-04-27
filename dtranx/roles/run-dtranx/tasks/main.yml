@@ -1,102 +1,21 @@
+# TODO:
+#     1. update the local dtranx conf file: follow the 183-191 lines in Deploy.py in DTranx project
+#           among the configurations, InitializeDB and PerfLog might be dynamically adjusted during the perf tests, so highlight these configurations
+#     2. make it configurable as whether to recover the backup database or not. Follow the 48-80 lines in TestHelper.py in DTranx project
+#     3. run dtranx service: follow the 193-214 lines in Deploy.py in DTranx project
 ---
-- name: install configure file
-  copy:
-    src: DTranx.conf
-    dest: {{dtranx_dir}}
-
-- name: modify DTranx.conf
-  lineinfile:
-    path: "{{dtranx_dir}}/DTranx.conf"
-    regexp: "{{item.regexp}}"
-    line: "{{item.line}}"
-  with_items:
-    - { regexp: "PerfLog", line: "PerfLog = {{dtranx_PerfLog}}" }
-    - { regexp: "routerFrontPort", line: "routerFrontPort = {{dtranx_routerFrontPort}}" }
-    - { regexp: "maxIOThreads", line: "maxIOThreads = {{dtranx_maxIOThreads}}" }
-    - { regexp: "maxSockets", line: "maxSockets = {{dtranx_maxSockets}}" }
-    - { regexp: "LogOption", line: "LogOption = {{dtranx_LogOption}}" }
-    - { regexp: "PersistLogDir", line: "PersistLogDir = {{dtranx_PersistLogDir}}" }
-    - { regexp: "FileTruncate", line: "FileTruncate = {{dtranx_FileTruncate}}" }
-    - { regexp: "PartitionBroadcastThreshold", line: "PartitionBroadcastThreshold = {{dtranx_PartitionBroadcastThreshold}}" }
-    - { regexp: "ServerMode", line: "ServerMode = {{dtranx_ServerMode}}" }
-    - { regexp: "GCPollingPeriod", line: "GCPollingPeriod = {{dtranx_GCPollingPeriod}}" }
-    - { regexp: "RepartitionTranxFilter", line: "RepartitionTranxFilter = {{dtranx_RepartitionTranxFilter}}" }
-    - { regexp: "InitializeDB", line: "InitializeDB = {{dtranx_InitializeDB}}" }
-nx_datastructure}}
-- name: restore datastructure
-  command: "{{item}}"
-  with_items:
-    - "rm -rf {{dtranx_dir}}/dtranx.{{dtranx_datastructure}}.db0"
-    - "rm -rf {{dtranx_dir}}/dtranx.{{dtranx_datastructure}}.db1"
-    - "rm -rf {{dtranx_dir}}/dtranx.{{dtranx_datastructure}}.db2"
-    - "rm -rf {{dtranx_dir}}/dtranx.{{dtranx_datastructure}}.db3"
-    - "rm -rf {{dtranx_dir}}/dtranx.{{dtranx_datastructure}}.mapdb"
-    - "cp -R {{dtranx_dir}}/dtranx.db0 {{dtranx_dir}}/dtranx.{{dtranx_datastructure}}.db0"
-    - "cp -R {{dtranx_dir}}/dtranx.db1 {{dtranx_dir}}/dtranx.{{dtranx_datastructure}}.db1"
-    - "cp -R {{dtranx_dir}}/dtranx.db2 {{dtranx_dir}}/dtranx.{{dtranx_datastructure}}.db2"
-    - "cp -R {{dtranx_dir}}/dtranx.db3 {{dtranx_dir}}/dtranx.{{dtranx_datastructure}}.db3"
-    - "cp -R {{dtranx_dir}}/dtranx.dbmap {{dtranx_dir}}/dtranx.{{dtranx_datastructure}}.dbmap"
-  when: dtranx_mode == 0
-
-- name: backup datastructure
-  command: "{{item}}"
-  with_items:
-    - "rm -rf {{dtranx_dir}}/dtranx.db0"
-    - "rm -rf {{dtranx_dir}}/dtranx.db1"
-    - "rm -rf {{dtranx_dir}}/dtranx.db2"
-    - "rm -rf {{dtranx_dir}}/dtranx.db3"
-    - "rm -rf {{dtranx_dir}}/dtranx.mapdb"
-    - "cp -R {{dtranx_dir}}/dtranx.{{dtranx_datastructure}}.db0 {{dtranx_dir}}/dtranx.db0"
-    - "cp -R {{dtranx_dir}}/dtranx.{{dtranx_datastructure}}.db1 {{dtranx_dir}}/dtranx.db1"
-    - "cp -R {{dtranx_dir}}/dtranx.{{dtranx_datastructure}}.db2 {{dtranx_dir}}/dtranx.db2"
-    - "cp -R {{dtranx_dir}}/dtranx.{{dtranx_datastructure}}.db3 {{dtranx_dir}}/dtranx.db3"
-    - "cp -R {{dtranx_dir}}/dtranx.{{dtranx_datastructure}}.dbmap {{dtranx_dir}}/dtranx.dbmap"
-  when: dtranx_mode == 1
-
-- name: fetch datastructure to local
-  fetch:
-    src: "{{item}}"
-    dest: "{{project_dir}}/dtranx_fetched/{{inventory_hostname}}/"
-  with_items:
-    - "{{dtranx_dir}}/dtranx.{{dtranx_datastructure}}.db0"
-    - "{{dtranx_dir}}/dtranx.{{dtranx_datastructure}}.db1"
-    - "{{dtranx_dir}}/dtranx.{{dtranx_datastructure}}.db2"
-    - "{{dtranx_dir}}/dtranx.{{dtranx_datastructure}}.db3"
-    - "{{dtranx_dir}}/dtranx.{{dtranx_datastructure}}.dbmap"
-  when: dtranx_mode == 2
-
-- name: push datastructure to remove
-  copy:
-    src: "{{item}}"
-    dest: "{{dtranx_dir}}"
-  with_items:
-    - "{{project_dir}}/dtranx_fetched/{{inventory_hostname}}/dtranx.{{dtranx_datastructure}}.db0"
-    - "{{project_dir}}/dtranx_fetched/{{inventory_hostname}}/dtranx.{{dtranx_datastructure}}.db1"
-    - "{{project_dir}}/dtranx_fetched/{{inventory_hostname}}/dtranx.{{dtranx_datastructure}}.db2"
-    - "{{project_dir}}/dtranx_fetched/{{inventory_hostname}}/dtranx.{{dtranx_datastructure}}.db3"
-    - "{{project_dir}}/dtranx_fetched/{{inventory_hostname}}/dtranx.{{dtranx_datastructure}}.dbmap"
-  when: dtranx_mode == 3
-
-- name: prepare localips file
-  lineinfile:
-    path: "{{project_dir}}/localips"
-    line: "{{inventory_hostname}}"
-    create: yes
-  delegate_to: localhost
-    
-- name: upload localips to all servers
-  copy:
-    src: "{{project_dir}}/localips"
-    dest: "{{dtranx_dir}}/ips"
-
-
-
 - name: prepare to run DTranx
   shell: "ulimit -c unlimited; export LD_LIBRARY_PATH=$LD_LIBRARY_ATH:/usr/local/lib;"
   args:
     chdir: "{{dtranx_dir}}"
 
 - name: run DTranx binary
-  shell: "DTranx -i ips -c DTranx.conf &"
+  shell: "nohup ./DTranx -i ips -c DTranx.conf >> DTranx.log 2>&1 &"
+  args:
+    chdir: "{{dtranx_dir}}"
 
-
+- name: core binding for zeromq
+  shell: "./process.sh bind 1,21"
+  args:
+    chdir: "{{dtranx_dir}}"
+  become: true

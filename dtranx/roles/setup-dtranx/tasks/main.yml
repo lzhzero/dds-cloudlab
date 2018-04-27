@@ -1,0 +1,78 @@
+# TODO:
+#     1. update the local dtranx conf file: follow the 183-191 lines in Deploy.py in DTranx project
+#           among the configurations, InitializeDB and PerfLog might be dynamically adjusted during the perf tests, so highlight these configurations
+#     2. make it configurable as whether to recover the backup database or not. Follow the 48-80 lines in TestHelper.py in DTranx project
+#     3. run dtranx service: follow the 193-214 lines in Deploy.py in DTranx project
+- name: install configure file
+  copy:
+    src: "{{item}}"
+    dest: "{{dtranx_dir}}"
+    mode: preserve
+  with_items:
+    - DTranx.conf
+    - process.sh
+  
+
+- name: modify DTranx.conf
+  lineinfile:
+    path: "{{dtranx_dir}}/DTranx.conf"
+    regexp: "{{item.regexp}}"
+    line: "{{item.line}}"
+  with_items:
+    - { regexp: "PerfLog", line: "PerfLog = {{dtranx_PerfLog}}" }
+    - { regexp: "routerFrontPort", line: "routerFrontPort = {{dtranx_routerFrontPort}}" }
+    - { regexp: "maxIOThreads", line: "maxIOThreads = {{dtranx_maxIOThreads}}" }
+    - { regexp: "maxSockets", line: "maxSockets = {{dtranx_maxSockets}}" }
+    - { regexp: "LogOption", line: "LogOption = {{dtranx_LogOption}}" }
+    - { regexp: "PersistLogDir", line: "PersistLogDir = {{dtranx_PersistLogDir}}" }
+    - { regexp: "FileTruncate", line: "FileTruncate = {{dtranx_FileTruncate}}" }
+    - { regexp: "PartitionBroadcastThreshold", line: "PartitionBroadcastThreshold = {{dtranx_PartitionBroadcastThreshold}}" }
+    - { regexp: "ServerMode", line: "ServerMode = {{dtranx_ServerMode}}" }
+    - { regexp: "GCPollingPeriod", line: "GCPollingPeriod = {{dtranx_GCPollingPeriod}}" }
+    - { regexp: "RepartitionTranxFilter", line: "RepartitionTranxFilter = {{dtranx_RepartitionTranxFilter}}" }
+    - { regexp: "InitializeDB", line: "InitializeDB = {{dtranx_InitializeDB}}" }
+    - { regexp: "SelfAddress", line: "SelfAddress = {{inventory_hostname}}" }
+
+
+# Core binding for vlan on cloudlab
+# First, discover vlan name
+- name: discover vlan name
+  set_fact:
+    vlan_interface: "{{item}}"
+  when: >
+    (hostvars[inventory_hostname]['ansible_%s' % item]|default({})).get('ipv4',{}).get('address') == inventory_hostname
+  with_items:
+    - "{{ansible_interfaces}}"
+
+- name: discover actual interface for this vlan
+  shell: 'find /sys/class/net/{{vlan_interface}}/ -name lower* -printf "%f\n" | cut -c 7-'
+  register: shell_output
+
+- name: get vlan lower interface
+  set_fact:
+    vlan_lower_interface: "{{shell_output.stdout}}"
+
+- debug:
+    msg: >-
+      vlan is {{vlan_interface}}, lower interface is {{vlan_lower_interface}}.
+
+
+- name: core binding for NIC tx and rx 
+  shell: "./process.sh softirq {{vlan_lower_interface}} 40 1 17"
+  args:
+    chdir: "{{dtranx_dir}}"
+  become: true
+- name: prepare localips file
+  lineinfile:
+    path: "{{project_dir}}/localips"
+    line: "{{inventory_hostname}}"
+    create: yes
+  delegate_to: localhost
+    
+- name: upload localips to all servers
+  copy:
+    src: "{{project_dir}}/localips"
+    dest: "{{dtranx_dir}}/ips"
+
+
+

@@ -1,0 +1,7 @@
+---
+
+- name: setup Logcabin MultiRSM daemon service
+  hosts: logcabin_all
+  gather_facts: false
+  roles:
+    - setup-logcabin

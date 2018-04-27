@@ -11,13 +11,13 @@
 
 
 - name: aggregate throughput file
-  shell: grep -n workload ycsbc.out.{{item}} | awk '{print $3}' >> {{db}}_throughput_list
+  shell: grep -n workload ycsbc.out.{{item}} | awk '{print $4}' >> {{db}}_throughput_list
   args:
     chdir: "{{benchmark_dir}}"
   with_items: "{{groups['ycsbc_clients']}}" 
 
 - name: calc total throughput
-  shell: awk '{s+=$1} END {print s}' hyperdex_throughput_list > {{db}}_throughput_total
+  shell: awk '{s+=$1} END {print s}' {{db}}_throughput_list > {{db}}_throughput_total
   args:
     chdir: "{{benchmark_dir}}"
 
@@ -28,7 +28,7 @@
   with_items: "{{groups['ycsbc_clients']}}" 
 
 - name: calc avg latency
-  shell: awk '{s+=$1} END {print s/NR}' hyperdex_latency_list > {{db}}_latency_avg
+  shell: awk '{s+=$1} END {print s/NR}' {{db}}_latency_list > {{db}}_latency_avg
   args:
     chdir: "{{benchmark_dir}}"
 
