@@ -6,6 +6,11 @@
 # one ansible master server in the cluster. Second, run it in local mode in the ansible master.
 # 	remote mode: remote: copy the project and private keys to one server in the cluster  
 #	local mode: prepare the server in the cluster
+
+LogcabinDir=
+DTranxDir=
+YCSBCDir=
+
 if [[ "$#" -ne 1 ]];then
 	echo "args: remote/local"
 	exit
@@ -25,37 +30,59 @@ if [ $1 == "remote" ];then
 	echo "Copy dtranx related files"
 	ssh -i $prikeyPath $remoteIP "mkdir -p ~/DTranx/include"
 	ssh -i $prikeyPath $remoteIP "mkdir -p ~/DTranx/Build"
-	scp -i $prikeyPath -r ../DTranx/include/DTranx $remoteIP:~/DTranx/include/
-	scp -i $prikeyPath -r ../DTranx/Build/libdtranx.a $remoteIP:~/DTranx/Build/
-	scp -i $prikeyPath -r ../DTranx/Build/libdtranx.so $remoteIP:~/DTranx/Build/
-	scp -i $prikeyPath -r ../DTranx/Build/DTranx $remoteIP:~/DTranx/Build/
+	echo "input DTranx directory:(default: ../DTranx)"
+	read DTranxDir
+	eval DTranxDir=$DTranxDir
+	if [[ -z $DTranxDir ]];then
+		DTranxDir="../DTranx/"
+	fi
+	scp -i $prikeyPath -r $DTranxDir/Build/libdtranx.a $remoteIP:~/DTranx/Build/
+	scp -i $prikeyPath -r $DTranxDir/Build/libdtranx.so $remoteIP:~/DTranx/Build/
+	scp -i $prikeyPath -r $DTranxDir/Build/DTranx $remoteIP:~/DTranx/Build/
 
 	echo "Copy logcabin related files"
-
 	ssh -i $prikeyPath $remoteIP "mkdir -p ~/Logcabin/Client"
 	ssh -i $prikeyPath $remoteIP "mkdir -p ~/Logcabin/RPC/zeromq"
 	ssh -i $prikeyPath $remoteIP "mkdir -p ~/Logcabin/build"
-	scp -i $prikeyPath -r ../Logcabin/Client/Client.h $remoteIP:~/Logcabin/Client/
-	scp -i $prikeyPath -r ../Logcabin/Client/ClientDataStructure.h $remoteIP:~/Logcabin/Client/
-	scp -i $prikeyPath -r ../Logcabin/Client/DataStore.h $remoteIP:~/Logcabin/Client/
-	scp -i $prikeyPath -r ../Logcabin/Client/KDTree.h $remoteIP:~/Logcabin/Client/
-	scp -i $prikeyPath -r ../Logcabin/RPC/DaemonSendHelper.h $remoteIP:~/Logcabin/RPC/
-	scp -i $prikeyPath -r ../Logcabin/RPC/zeromq/ZeromqDaemonSend.h $remoteIP:~/Logcabin/RPC/zeromq/
-	scp -i $prikeyPath -r ../Logcabin/build/liblogcabin.a $remoteIP:~/Logcabin/build/
-	scp -i $prikeyPath -r ../Logcabin/build/liblogcabin.so $remoteIP:~/Logcabin/build/
-	scp -i $prikeyPath -r ../Logcabin/build/LogCabin $remoteIP:~/Logcabin/build/
+	echo "input Logcabin directory:(default: ../Logcabin)"
+	read LogcabinDir
+	eval LogcabinDir=$LogcabinDir
+	if [[ -z $LogcabinDir ]];then
+		LogcabinDir="../Logcabin/"
+	fi
+	scp -i $prikeyPath -r $LogcabinDir/build/liblogcabin.a $remoteIP:~/Logcabin/build/
+	scp -i $prikeyPath -r $LogcabinDir/build/liblogcabin.so $remoteIP:~/Logcabin/build/
+	scp -i $prikeyPath -r $LogcabinDir/build/LogCabin $remoteIP:~/Logcabin/build/
 
 	echo "Copy ycsbc related files"
-
 	ssh -i $prikeyPath $remoteIP "mkdir -p ~/YCSB-C-DTranx"
-	scp -i $prikeyPath -r ../YCSB-C-DTranx/ycsbc $remoteIP:~/YCSB-C-DTranx/
-	scp -i $prikeyPath -r ../YCSB-C-DTranx/workloads/*.spec $remoteIP:~/YCSB-C-DTranx/
+	echo "input YCSBC directory:(default: ../YCSB-C-DTranx)"
+	read YCSBCDir
+	eval YCSBCDir=$YCSBCDir
+	if [[ -z $YCSBCDir ]];then
+		YCSBCDir="../YCSB-C-DTranx"
+	fi
+	scp -i $prikeyPath -r $YCSBCDir/ycsbc $remoteIP:~/YCSB-C-DTranx/
+	scp -i $prikeyPath -r $YCSBCDir/workloads/*.spec $remoteIP:~/YCSB-C-DTranx/
 	
 	echo "Copy missing libs"
 	ssh -i $prikeyPath $remoteIP "mkdir -p ~/libs/"
-	scp -i $prikeyPath -r ../libs/* $remoteIP:~/libs/
+	echo "input library directory:(default: ../libs)"
+	read LibDir
+	eval LibDir=$LibDir
+	if [[ -z $LibDir ]];then
+		LibDir="../libs"
+	fi
+	scp -i $prikeyPath -r $LibDir/libbangdb-client* $remoteIP:~/libs/
+	scp -i $prikeyPath -r $LibDir/libbusybee* $remoteIP:~/libs/
+	scp -i $prikeyPath -r $LibDir/libe* $remoteIP:~/libs/
+	scp -i $prikeyPath -r $LibDir/libhyperdex* $remoteIP:~/libs/
+	scp -i $prikeyPath -r $LibDir/libmacaroons* $remoteIP:~/libs/
+	scp -i $prikeyPath -r $LibDir/libpqxx* $remoteIP:~/libs/
+	scp -i $prikeyPath -r $LibDir/libreplicant* $remoteIP:~/libs/
+	scp -i $prikeyPath -r $LibDir/libsodium* $remoteIP:~/libs/
+	scp -i $prikeyPath -r $LibDir/libtreadstone* $remoteIP:~/libs/
 	echo "Complete"
-
 
 elif [ $1 == "local" ];then
 	echo "IdentityFile ~/cloudlab.pri" >> ~/.ssh/config
