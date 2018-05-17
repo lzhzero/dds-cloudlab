@@ -32,6 +32,15 @@
     - "{{libs_dir}}/*"
   become: true
 
+- name: install btree and rtree libs
+  copy:
+    src: "{{item}}"
+    dest: /usr/local/lib
+  with_fileglob:
+    - "{{btree_src_dir}}/build/libbtree*"
+    - "{{rtree_src_dir}}/build/librtree*"
+  become: true
+
 - name: sudo ldconfig
   shell: sudo ldconfig
 

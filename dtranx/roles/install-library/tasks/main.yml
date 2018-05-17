@@ -8,7 +8,6 @@
     src: "{{dtranx_src_dir}}/{{ item.src }}"
     dest: "{{ item.dest }}"
   with_items:
-    - { src: 'include/DTranx', dest: '/usr/local/include/'}
     - { src: 'Build/libdtranx.a', dest: '/usr/local/lib/'}
     - { src: 'Build/libdtranx.so', dest: '/usr/local/lib'}
   become: true

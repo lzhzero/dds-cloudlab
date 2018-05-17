@@ -27,63 +27,100 @@ if [ $1 == "remote" ];then
 	rsync -avz -e "ssh -i $prikeyPath" ../dds-cloudlab --exclude .git $remoteIP:~/
 	scp -i $prikeyPath $prikeyPath $remoteIP:~/cloudlab.pri
 
-	echo "Copy dtranx related files"
-	ssh -i $prikeyPath $remoteIP "mkdir -p ~/DTranx/include"
-	ssh -i $prikeyPath $remoteIP "mkdir -p ~/DTranx/Build"
-	echo "input DTranx directory:(default: ../DTranx)"
-	read DTranxDir
-	eval DTranxDir=$DTranxDir
-	if [[ -z $DTranxDir ]];then
-		DTranxDir="../DTranx/"
+	echo "Copy dtranx related files, skip(y/n):"
+	read skip
+	if [ $skip == "n" ];then
+		ssh -i $prikeyPath $remoteIP "mkdir -p ~/DTranx/include"
+		ssh -i $prikeyPath $remoteIP "mkdir -p ~/DTranx/Build"
+		echo "input DTranx directory:(default: ../DTranx)"
+		read DTranxDir
+		eval DTranxDir=$DTranxDir
+		if [[ -z $DTranxDir ]];then
+			DTranxDir="../DTranx/"
+		fi
+		scp -i $prikeyPath -r $DTranxDir/Build/libdtranx.a $remoteIP:~/DTranx/Build/
+		scp -i $prikeyPath -r $DTranxDir/Build/libdtranx.so $remoteIP:~/DTranx/Build/
+		scp -i $prikeyPath -r $DTranxDir/Build/DTranx $remoteIP:~/DTranx/Build/
 	fi
-	scp -i $prikeyPath -r $DTranxDir/Build/libdtranx.a $remoteIP:~/DTranx/Build/
-	scp -i $prikeyPath -r $DTranxDir/Build/libdtranx.so $remoteIP:~/DTranx/Build/
-	scp -i $prikeyPath -r $DTranxDir/Build/DTranx $remoteIP:~/DTranx/Build/
 
-	echo "Copy logcabin related files"
-	ssh -i $prikeyPath $remoteIP "mkdir -p ~/Logcabin/Client"
-	ssh -i $prikeyPath $remoteIP "mkdir -p ~/Logcabin/RPC/zeromq"
-	ssh -i $prikeyPath $remoteIP "mkdir -p ~/Logcabin/build"
-	echo "input Logcabin directory:(default: ../Logcabin)"
-	read LogcabinDir
-	eval LogcabinDir=$LogcabinDir
-	if [[ -z $LogcabinDir ]];then
-		LogcabinDir="../Logcabin/"
+	echo "Copy logcabin related files, skip(y/n):"
+	read skip
+	if [ $skip == "n" ];then
+		ssh -i $prikeyPath $remoteIP "mkdir -p ~/Logcabin/build"
+		echo "input Logcabin directory:(default: ../Logcabin)"
+		read LogcabinDir
+		eval LogcabinDir=$LogcabinDir
+		if [[ -z $LogcabinDir ]];then
+			LogcabinDir="../Logcabin/"
+		fi
+		scp -i $prikeyPath -r $LogcabinDir/build/liblogcabin.a $remoteIP:~/Logcabin/build/
+		scp -i $prikeyPath -r $LogcabinDir/build/liblogcabin.so $remoteIP:~/Logcabin/build/
+		scp -i $prikeyPath -r $LogcabinDir/build/LogCabin $remoteIP:~/Logcabin/build/
 	fi
-	scp -i $prikeyPath -r $LogcabinDir/build/liblogcabin.a $remoteIP:~/Logcabin/build/
-	scp -i $prikeyPath -r $LogcabinDir/build/liblogcabin.so $remoteIP:~/Logcabin/build/
-	scp -i $prikeyPath -r $LogcabinDir/build/LogCabin $remoteIP:~/Logcabin/build/
 
-	echo "Copy ycsbc related files"
-	ssh -i $prikeyPath $remoteIP "mkdir -p ~/YCSB-C-DTranx"
-	echo "input YCSBC directory:(default: ../YCSB-C-DTranx)"
-	read YCSBCDir
-	eval YCSBCDir=$YCSBCDir
-	if [[ -z $YCSBCDir ]];then
-		YCSBCDir="../YCSB-C-DTranx"
+	echo "Copy BTree related files, skip(y/n):"
+	read skip
+	if [ $skip == "n" ];then
+		ssh -i $prikeyPath $remoteIP "mkdir -p ~/BTree/build"
+		echo "input BTree directory:(default: ../BTree)"
+		read BTreeDir
+		eval BTreeDir=$BTreeDir
+		if [[ -z $BTreeDir ]];then
+			BTreeDir="../BTree/"
+		fi
+		scp -i $prikeyPath -r $BTreeDir/Build/libbtree.a $remoteIP:~/BTree/build/
+		scp -i $prikeyPath -r $BTreeDir/Build/libbtree.so $remoteIP:~/BTree/build/
 	fi
-	scp -i $prikeyPath -r $YCSBCDir/ycsbc $remoteIP:~/YCSB-C-DTranx/
-	scp -i $prikeyPath -r $YCSBCDir/workloads/*.spec $remoteIP:~/YCSB-C-DTranx/
-	
-	echo "Copy missing libs"
-	ssh -i $prikeyPath $remoteIP "mkdir -p ~/libs/"
-	echo "input library directory:(default: ../libs)"
-	read LibDir
-	eval LibDir=$LibDir
-	if [[ -z $LibDir ]];then
-		LibDir="../libs"
-	fi
-	scp -i $prikeyPath -r $LibDir/libbangdb-client* $remoteIP:~/libs/
-	scp -i $prikeyPath -r $LibDir/libbusybee* $remoteIP:~/libs/
-	scp -i $prikeyPath -r $LibDir/libe* $remoteIP:~/libs/
-	scp -i $prikeyPath -r $LibDir/libhyperdex* $remoteIP:~/libs/
-	scp -i $prikeyPath -r $LibDir/libmacaroons* $remoteIP:~/libs/
-	scp -i $prikeyPath -r $LibDir/libpqxx* $remoteIP:~/libs/
-	scp -i $prikeyPath -r $LibDir/libreplicant* $remoteIP:~/libs/
-	scp -i $prikeyPath -r $LibDir/libsodium* $remoteIP:~/libs/
-	scp -i $prikeyPath -r $LibDir/libtreadstone* $remoteIP:~/libs/
-	echo "Complete"
 
+	echo "Copy RTree related files, skip(y/n):"
+	read skip
+	if [ $skip == "n" ];then
+		ssh -i $prikeyPath $remoteIP "mkdir -p ~/RTree/build"
+		echo "input RTree directory:(default: ../RTree)"
+		read RTreeDir
+		eval RTreeDir=$RTreeDir
+		if [[ -z $RTreeDir ]];then
+			RTreeDir="../RTree/"
+		fi
+		scp -i $prikeyPath -r $RTreeDir/Build/librtree.a $remoteIP:~/RTree/build/
+		scp -i $prikeyPath -r $RTreeDir/Build/librtree.so $remoteIP:~/RTree/build/
+	fi
+
+	echo "Copy ycsbc related files, skip(y/n):"
+	read skip
+	if [ $skip == "n" ];then
+		ssh -i $prikeyPath $remoteIP "mkdir -p ~/YCSB-C-DTranx"
+		echo "input YCSBC directory:(default: ../YCSB-C-DTranx)"
+		read YCSBCDir
+		eval YCSBCDir=$YCSBCDir
+		if [[ -z $YCSBCDir ]];then
+			YCSBCDir="../YCSB-C-DTranx"
+		fi
+		scp -i $prikeyPath -r $YCSBCDir/ycsbc $remoteIP:~/YCSB-C-DTranx/
+		scp -i $prikeyPath -r $YCSBCDir/workloads/*.spec $remoteIP:~/YCSB-C-DTranx/
+	fi
+
+	echo "Copy missing libs, skip(y/n):"
+	read skip
+	if [ $skip == "n" ];then
+		ssh -i $prikeyPath $remoteIP "mkdir -p ~/libs/"
+		echo "input library directory:(default: ../libs)"
+		read LibDir
+		eval LibDir=$LibDir
+		if [[ -z $LibDir ]];then
+			LibDir="../libs"
+		fi
+		scp -i $prikeyPath -r $LibDir/libbangdb-client* $remoteIP:~/libs/
+		scp -i $prikeyPath -r $LibDir/libbusybee* $remoteIP:~/libs/
+		scp -i $prikeyPath -r $LibDir/libe* $remoteIP:~/libs/
+		scp -i $prikeyPath -r $LibDir/libhyperdex* $remoteIP:~/libs/
+		scp -i $prikeyPath -r $LibDir/libmacaroons* $remoteIP:~/libs/
+		scp -i $prikeyPath -r $LibDir/libpqxx* $remoteIP:~/libs/
+		scp -i $prikeyPath -r $LibDir/libreplicant* $remoteIP:~/libs/
+		scp -i $prikeyPath -r $LibDir/libsodium* $remoteIP:~/libs/
+		scp -i $prikeyPath -r $LibDir/libtreadstone* $remoteIP:~/libs/
+		echo "Complete"
+	fi
 elif [ $1 == "local" ];then
 	echo "IdentityFile ~/cloudlab.pri" >> ~/.ssh/config
 	echo "StrictHostKeyChecking no" >> ~/.ssh/config
