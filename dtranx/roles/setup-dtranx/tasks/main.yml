@@ -12,7 +12,6 @@
     - DTranx.conf
     - process.sh
   
-
 - name: modify DTranx.conf
   lineinfile:
     path: "{{dtranx_dir}}/DTranx.conf"
@@ -32,7 +31,8 @@
     - { regexp: "RepartitionTranxFilter", line: "RepartitionTranxFilter = {{dtranx_RepartitionTranxFilter}}" }
     - { regexp: "InitializeDB", line: "InitializeDB = {{dtranx_InitializeDB}}" }
     - { regexp: "SelfAddress", line: "SelfAddress = {{inventory_hostname}}" }
-
+    - { regexp: "DBSize", line: "DBSize = {{dtranx_DBSize}}" }
+    - { regexp: "IsRead", line: "IsRead = {{dtranx_IsRead}}" }
 
 # Core binding for vlan on cloudlab
 # First, discover vlan name
@@ -74,5 +74,10 @@
     src: "{{project_dir}}/localips"
     dest: "{{dtranx_dir}}/ips"
 
-
+- name: create backup folder on master node
+  file:
+    path: "{{project_dir}}/dtranx_fetched"
+    state: directory
+    mode: 0755
+  delegate_to: localhost
 

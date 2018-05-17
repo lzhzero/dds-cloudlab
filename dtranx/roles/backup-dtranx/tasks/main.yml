@@ -34,9 +34,10 @@
   when: dtranx_mode == 1
 
 - name: fetch datastructure to local
-  fetch:
+  synchronize:
     src: "{{item}}"
     dest: "{{project_dir}}/dtranx_fetched/{{inventory_hostname}}/"
+    mode: pull
   with_items:
     - "{{dtranx_dir}}/dtranx.db0"
     - "{{dtranx_dir}}/dtranx.db1"

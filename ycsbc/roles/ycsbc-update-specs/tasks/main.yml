@@ -1,0 +1,20 @@
+---
+
+- name: generate server ips
+  raw: "echo {{item}} >> {{benchmark_dir}}/{{server_ips_filename}}"
+  with_items: "{{servers}}"
+
+- name: copy workload files
+  copy:
+    src: "{{ycsb_src_dir}}/{{item}}"
+    dest: "{{benchmark_dir}}"
+    mode: 0644
+#  with_items: "{{workloads_path}}"
+  with_items: "{{workload_files}}"
+
+- name: copy ycsbc program
+  copy:
+    src: "{{ycsb_src_dir}}/ycsbc"
+    dest: "{{benchmark_dir}}"
+    mode: 0755
+
