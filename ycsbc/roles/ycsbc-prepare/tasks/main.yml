@@ -24,6 +24,31 @@
     dest: "{{benchmark_dir}}"
     mode: 0755
 
+  
+- name: create btree and rtree directory if not exist
+  command: mkdir -p {{item}}
+  with_items: 
+    - "{{rtree_dir}}"
+    - "{{btree_dir}}"
+
+- name: copy btree programs
+  copy:
+    src: "{{item}}"
+    dest: "{{btree_dir}}"
+    mode: 0755
+  with_fileglob:
+    - "{{btree_src_dir}}/Build/BTreeMain"
+    - "{{btree_src_dir}}/BTree.conf"
+
+- name: copy rtree programs
+  copy:
+    src: "{{item}}"
+    dest: "{{rtree_dir}}"
+    mode: 0755
+  with_fileglob:
+    - "{{rtree_src_dir}}/Build/RTreeMain"
+    - "{{rtree_src_dir}}/RTree.conf"
+
 - name: install related libs
   copy:
     src: "{{item}}"
@@ -37,8 +62,8 @@
     src: "{{item}}"
     dest: /usr/local/lib
   with_fileglob:
-    - "{{btree_src_dir}}/build/libbtree*"
-    - "{{rtree_src_dir}}/build/librtree*"
+    - "{{btree_src_dir}}/Build/libbtree*"
+    - "{{rtree_src_dir}}/Build/librtree*"
   become: true
 
 - name: sudo ldconfig

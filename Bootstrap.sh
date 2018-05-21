@@ -46,44 +46,48 @@ if [ $1 == "remote" ];then
 	echo "Copy logcabin related files, skip(y/n):"
 	read skip
 	if [ $skip == "n" ];then
-		ssh -i $prikeyPath $remoteIP "mkdir -p ~/Logcabin/build"
+		ssh -i $prikeyPath $remoteIP "mkdir -p ~/Logcabin/Build"
 		echo "input Logcabin directory:(default: ../Logcabin)"
 		read LogcabinDir
 		eval LogcabinDir=$LogcabinDir
 		if [[ -z $LogcabinDir ]];then
 			LogcabinDir="../Logcabin/"
 		fi
-		scp -i $prikeyPath -r $LogcabinDir/build/liblogcabin.a $remoteIP:~/Logcabin/build/
-		scp -i $prikeyPath -r $LogcabinDir/build/liblogcabin.so $remoteIP:~/Logcabin/build/
-		scp -i $prikeyPath -r $LogcabinDir/build/LogCabin $remoteIP:~/Logcabin/build/
+		scp -i $prikeyPath -r $LogcabinDir/build/liblogcabin.a $remoteIP:~/Logcabin/Build/
+		scp -i $prikeyPath -r $LogcabinDir/build/liblogcabin.so $remoteIP:~/Logcabin/Build/
+		scp -i $prikeyPath -r $LogcabinDir/build/LogCabin $remoteIP:~/Logcabin/Build/
 	fi
 
 	echo "Copy BTree related files, skip(y/n):"
 	read skip
 	if [ $skip == "n" ];then
-		ssh -i $prikeyPath $remoteIP "mkdir -p ~/BTree/build"
+		ssh -i $prikeyPath $remoteIP "mkdir -p ~/BTree/Build"
 		echo "input BTree directory:(default: ../BTree)"
 		read BTreeDir
 		eval BTreeDir=$BTreeDir
 		if [[ -z $BTreeDir ]];then
 			BTreeDir="../BTree/"
 		fi
-		scp -i $prikeyPath -r $BTreeDir/Build/libbtree.a $remoteIP:~/BTree/build/
-		scp -i $prikeyPath -r $BTreeDir/Build/libbtree.so $remoteIP:~/BTree/build/
+		scp -i $prikeyPath -r $BTreeDir/Build/libbtree.a $remoteIP:~/BTree/Build/
+		scp -i $prikeyPath -r $BTreeDir/Build/libbtree.so $remoteIP:~/BTree/Build/
+		scp -i $prikeyPath -r $BTreeDir/Build/main $remoteIP:~/BTree/Build/BTreeMain
+		scp -i $prikeyPath -r $BTreeDir/BTree.conf $remoteIP:~/BTree/
 	fi
 
 	echo "Copy RTree related files, skip(y/n):"
 	read skip
 	if [ $skip == "n" ];then
-		ssh -i $prikeyPath $remoteIP "mkdir -p ~/RTree/build"
+		ssh -i $prikeyPath $remoteIP "mkdir -p ~/RTree/Build"
 		echo "input RTree directory:(default: ../RTree)"
 		read RTreeDir
 		eval RTreeDir=$RTreeDir
 		if [[ -z $RTreeDir ]];then
 			RTreeDir="../RTree/"
 		fi
-		scp -i $prikeyPath -r $RTreeDir/Build/librtree.a $remoteIP:~/RTree/build/
-		scp -i $prikeyPath -r $RTreeDir/Build/librtree.so $remoteIP:~/RTree/build/
+		scp -i $prikeyPath -r $RTreeDir/Build/librtree.a $remoteIP:~/RTree/Build/
+		scp -i $prikeyPath -r $RTreeDir/Build/librtree.so $remoteIP:~/RTree/Build/
+		scp -i $prikeyPath -r $RTreeDir/Build/main $remoteIP:~/RTree/Build/RTreeMain
+		scp -i $prikeyPath -r $RTreeDir/RTree.conf $remoteIP:~/RTree/
 	fi
 
 	echo "Copy ycsbc related files, skip(y/n):"

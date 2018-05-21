@@ -7,5 +7,8 @@
     - "rm -rf {{dtranx_dir}}/dtranx*.db2"
     - "rm -rf {{dtranx_dir}}/dtranx*.db3"
     - "rm -rf {{dtranx_dir}}/dtranx*.mapdb"
+    - "rm -rf {{dtranx_dir}}/DTranx.log"
+    - "rm -rf /mnt/mem/dtranx.log*"
+    - "rm -rf /mnt/mem/gcdtranx.log*"
 
 
