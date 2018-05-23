@@ -4,4 +4,4 @@
   hosts: hyperdex_coordinator:hyperdex_daemon
   gather_facts: false
   roles:
-    - hyperdex-stop
+    - roles/hyperdex/hyperdex-stop

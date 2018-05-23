@@ -4,4 +4,4 @@
   hosts: localhost
   gather_facts: false
   roles:
-    - ycsbc-analyzer1
+    - roles/ycsbc/ycsbc-analyzer1

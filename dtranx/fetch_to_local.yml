@@ -4,6 +4,6 @@
   hosts: dtranx_all
   gather_facts: false
   roles:
-    - backup-dtranx
+    - roles/dtranx/backup-dtranx
   vars:
     dtranx_mode: 2

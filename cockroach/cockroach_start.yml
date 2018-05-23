@@ -4,17 +4,17 @@
   hosts: cockroach_first_node
   gather_facts: false
   roles:
-    - cockroach-first-start
+    - roles/cockroach/cockroach-first-start
 
 - name: start cockroach other nodes
   hosts: cockroach_other_nodes
   gather_facts: false
   roles:
-    - cockroach-others-start
+    - roles/cockroach/cockroach-others-start
 
 - name: start cockroach first node
   hosts: cockroach_first_node
   gather_facts: false
   roles:
-    - cockroach-setup
+    - roles/cockroach/cockroach-setup
 

@@ -4,4 +4,4 @@
   hosts: ycsbc_clients
   gather_facts: false
   roles:
-    - ycsbc-kill
+    - roles/ycsbc/ycsbc-kill

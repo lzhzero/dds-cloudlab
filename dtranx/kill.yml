@@ -4,4 +4,4 @@
   hosts: dtranx_all
   gather_facts: false
   roles:
-    - kill-dtranx
+    - roles/dtranx/kill-dtranx

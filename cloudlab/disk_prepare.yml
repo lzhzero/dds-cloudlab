@@ -4,4 +4,4 @@
   hosts: all
   gather_facts: true
   roles:
-    - mount-ssd-pmem0
+    - roles/cloudlab/mount-ssd-pmem0

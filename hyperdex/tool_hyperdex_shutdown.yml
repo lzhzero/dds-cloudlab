@@ -10,6 +10,6 @@
   hosts: hyperdex_coordinator:hyperdex_daemon
   gather_facts: false
   roles:
-    - hyperdex-clean
+    - roles/hyperdex/hyperdex-clean
 
 # clean hyperdex.db.bak maybe irrevelant

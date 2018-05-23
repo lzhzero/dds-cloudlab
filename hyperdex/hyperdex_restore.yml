@@ -4,7 +4,7 @@
   hosts: hyperdex_coordinator:hyperdex_daemon
   gather_facts: false
   roles:
-    - hyperdex-stop
+    - roles/hyperdex/hyperdex-stop
 
 
 # NOTE: coordinator will be cleaned twice, but it is ok so far
@@ -12,23 +12,23 @@
   hosts: hyperdex_coordinator:hyperdex_daemon
   gather_facts: false
   roles:
-    - hyperdex-clean
+    - roles/hyperdex/hyperdex-clean
 
 - name: restore hyperdex.db.bak
   hosts: hyperdex_daemon
   gather_facts: false
   roles:
-    - hyperdex-restore
+    - roles/hyperdex/hyperdex-restore
 
 
 - name: start hyperdex coordinator server
   hosts: hyperdex_coordinator
   gather_facts: false
   roles:
-    - hyperdex-coordinator-run
+    - roles/hyperdex/hyperdex-coordinator-run
 
 - name: start hyperdex daemons server
   hosts: hyperdex_daemon
   gather_facts: false
   roles:
-    - hyperdex-daemon-run 
+    - roles/hyperdex/hyperdex-daemon-run 

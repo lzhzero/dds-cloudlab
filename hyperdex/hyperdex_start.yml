@@ -4,25 +4,25 @@
   hosts: hyperdex_coordinator
   gather_facts: false
   roles:
-    - hyperdex-coordinator-run
+    - roles/hyperdex/hyperdex-coordinator-run
 
 - name: start hyperdex daemons server
   hosts: hyperdex_daemon
   gather_facts: false
   roles:
-    - hyperdex-daemon-run
+    - roles/hyperdex/hyperdex-daemon-run
 
 - name: Init hyperdex coordinator
   hosts: hyperdex_coordinator
   gather_facts: false
   roles:
-    - hyperdex-init
+    - roles/hyperdex/hyperdex-init
 
 - name: Backup hyperdex.db.bak on daemons
   hosts: hyperdex_daemon
   gather_facts: false
   roles:
-    - hyperdex-backup
+    - roles/hyperdex/hyperdex-backup
 
 - name: check if hyerdex coordinator running
   hosts: hyperdex_coordinator

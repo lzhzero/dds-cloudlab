@@ -4,17 +4,17 @@
   hosts: bangdb_master
   gather_facts: false
   roles:
-    - bangdb-master-run
+    - roles/bangdb/bangdb-master-run
 
 - name: start bang slave server
   hosts: bangdb_slave
   gather_facts: false
   roles:
-    - bangdb-slave-run
+    - roles/bangdb/bangdb-slave-run
 
 - name: check if all bangdb-server are running
   hosts: bangdb_master:bangdb_slave
   gather_facts: false
   roles:
-    - bangdb-run-check
+    - roles/bangdb/bangdb-run-check
 

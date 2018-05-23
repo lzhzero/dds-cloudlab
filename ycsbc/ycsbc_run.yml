@@ -1,7 +1,0 @@
----
-
-- name: run ycsbc clients
-  hosts: ycsbc_clients
-  gather_facts: false
-  roles:
-    - ycsbc-run

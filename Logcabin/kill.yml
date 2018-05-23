@@ -4,4 +4,4 @@
   hosts: logcabin_all
   gather_facts: false
   roles:
-    - kill-logcabin
+    - roles/Logcabin/kill-logcabin

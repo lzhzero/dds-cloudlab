@@ -4,4 +4,4 @@
   hosts: bangdb_master:bangdb_slave
   gather_facts: false
   roles:
-    - bangdb-stop
+    - roles/bangdb/bangdb-stop

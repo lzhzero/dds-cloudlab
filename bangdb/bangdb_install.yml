@@ -4,5 +4,5 @@
   hosts: all
   gather_facts: false
   roles:
-    - bangdb-install
+    - roles/bangdb/bangdb-install
 

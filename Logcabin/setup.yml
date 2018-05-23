@@ -4,4 +4,4 @@
   hosts: logcabin_all
   gather_facts: false
   roles:
-    - setup-logcabin
+    - roles/Logcabin/setup-logcabin

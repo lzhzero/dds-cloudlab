@@ -4,9 +4,9 @@
   hosts: ycsbc_clients
   gather_facts: false
   roles:
-    - ycsbc-run
+    - roles/ycsbc/ycsbc-run
   vars:
-    thread: 100
+    thread: 1
     db: dtranx
     stable_start: 5000
     stable_end: 20000

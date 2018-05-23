@@ -4,7 +4,7 @@
   hosts: ycsbc_clients
   gather_facts: false
   roles:
-    - ycsbc-prepare
+    - roles/ycsbc/ycsbc-prepare
 
 # TODO: 
 #   1. adjust operation count in the workload spec files

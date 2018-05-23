@@ -2,7 +2,7 @@
 
 - name: copy and untar  BangDB 0.9 binary
   unarchive:
-    src: bangdb_files/bangdb-cs-linux-64-native-0.9.tar.gz
+    src: bangdb-cs-linux-64-native-0.9.tar.gz
     dest: "{{project_dir}}"
 
 - name: modify config maxs_laves

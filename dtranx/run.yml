@@ -4,4 +4,4 @@
   hosts: dtranx_all
   gather_facts: false
   roles:
-    - run-dtranx
+    - roles/dtranx/run-dtranx
