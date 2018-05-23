@@ -5,3 +5,5 @@
   gather_facts: false
   roles:
     - backup-dtranx
+  vars:
+    dtranx_mode: 1
