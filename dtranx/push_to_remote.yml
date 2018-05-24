@@ -1,0 +1,9 @@
+---
+
+- name: run DTranx service
+  hosts: dtranx_all
+  gather_facts: false
+  roles:
+    - roles/dtranx/backup-dtranx
+  vars:
+    dtranx_mode: 3

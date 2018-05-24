@@ -14,11 +14,11 @@
     - "rm -rf {{dtranx_dir}}/dtranx.db2"
     - "rm -rf {{dtranx_dir}}/dtranx.db3"
     - "rm -rf {{dtranx_dir}}/dtranx.mapdb"
-    - "cp -R {{dtranx_dir}}/backup/dtranx.db0 {{dtranx_dir}}/dtranx.db0"
-    - "cp -R {{dtranx_dir}}/backup/dtranx.db1 {{dtranx_dir}}/dtranx.db1"
-    - "cp -R {{dtranx_dir}}/backup/dtranx.db2 {{dtranx_dir}}/dtranx.db2"
-    - "cp -R {{dtranx_dir}}/backup/dtranx.db3 {{dtranx_dir}}/dtranx.db3"
-    - "cp -R {{dtranx_dir}}/backup/dtranx.mapdb {{dtranx_dir}}/dtranx.mapdb"
+    - "cp -R {{dtranx_dir}}/backup/{{dtranx_datastructure}}.dtranx.db0 {{dtranx_dir}}/dtranx.db0"
+    - "cp -R {{dtranx_dir}}/backup/{{dtranx_datastructure}}.dtranx.db1 {{dtranx_dir}}/dtranx.db1"
+    - "cp -R {{dtranx_dir}}/backup/{{dtranx_datastructure}}.dtranx.db2 {{dtranx_dir}}/dtranx.db2"
+    - "cp -R {{dtranx_dir}}/backup/{{dtranx_datastructure}}.dtranx.db3 {{dtranx_dir}}/dtranx.db3"
+    - "cp -R {{dtranx_dir}}/backup/{{dtranx_datastructure}}.dtranx.mapdb {{dtranx_dir}}/dtranx.mapdb"
   when: dtranx_mode == 0
 
 - name: backup datastructure
@@ -26,36 +26,36 @@
   with_items:
     - "rm -rf {{dtranx_dir}}/backup"
     - "mkdir {{dtranx_dir}}/backup"
-    - "cp -R {{dtranx_dir}}/dtranx.db0 {{dtranx_dir}}/backup/"
-    - "cp -R {{dtranx_dir}}/dtranx.db1 {{dtranx_dir}}/backup/"
-    - "cp -R {{dtranx_dir}}/dtranx.db2 {{dtranx_dir}}/backup/"
-    - "cp -R {{dtranx_dir}}/dtranx.db3 {{dtranx_dir}}/backup/"
-    - "cp -R {{dtranx_dir}}/dtranx.mapdb {{dtranx_dir}}/backup/"
+    - "cp -R {{dtranx_dir}}/dtranx.db0 {{dtranx_dir}}/backup/{{dtranx_datastructure}}.dtranx.db0"
+    - "cp -R {{dtranx_dir}}/dtranx.db1 {{dtranx_dir}}/backup/{{dtranx_datastructure}}.dtranx.db1"
+    - "cp -R {{dtranx_dir}}/dtranx.db2 {{dtranx_dir}}/backup/{{dtranx_datastructure}}.dtranx.db2"
+    - "cp -R {{dtranx_dir}}/dtranx.db3 {{dtranx_dir}}/backup/{{dtranx_datastructure}}.dtranx.db3"
+    - "cp -R {{dtranx_dir}}/dtranx.mapdb {{dtranx_dir}}/backup/{{dtranx_datastructure}}.dtranx.mapdb"
   when: dtranx_mode == 1
 
 - name: fetch datastructure to local
   synchronize:
-    src: "{{item}}"
-    dest: "{{project_dir}}/dtranx_fetched/{{inventory_hostname}}/"
+    src: "{{dtranx_dir}}/{{item.src}}"
+    dest: "{{project_dir}}/dtranx_fetched/{{inventory_hostname}}/{{item.dest}}"
     mode: pull
   with_items:
-    - "{{dtranx_dir}}/dtranx.db0"
-    - "{{dtranx_dir}}/dtranx.db1"
-    - "{{dtranx_dir}}/dtranx.db2"
-    - "{{dtranx_dir}}/dtranx.db3"
-    - "{{dtranx_dir}}/dtranx.mapdb"
+    - { src: 'dtranx.db0', dest: '{{dtranx_datastructure}}.dtranx.db0' }
+    - { src: 'dtranx.db1', dest: '{{dtranx_datastructure}}.dtranx.db1' }
+    - { src: 'dtranx.db2', dest: '{{dtranx_datastructure}}.dtranx.db2' }
+    - { src: 'dtranx.db3', dest: '{{dtranx_datastructure}}.dtranx.db3' }
+    - { src: 'dtranx.mapdb', dest: '{{dtranx_datastructure}}.dtranx.mapdb' }
   when: dtranx_mode == 2
 
 - name: push datastructure to remove
   copy:
-    src: "{{item}}"
-    dest: "{{dtranx_dir}}"
+    src: "{{project_dir}}/dtranx_fetched/{{inventory_hostname}}/{{item.src}}"
+    dest: "{{dtranx_dir}}/{{item.dest}}"
   with_items:
-    - "{{project_dir}}/dtranx_fetched/{{inventory_hostname}}/dtranx.db0"
-    - "{{project_dir}}/dtranx_fetched/{{inventory_hostname}}/dtranx.db1"
-    - "{{project_dir}}/dtranx_fetched/{{inventory_hostname}}/dtranx.db2"
-    - "{{project_dir}}/dtranx_fetched/{{inventory_hostname}}/dtranx.db3"
-    - "{{project_dir}}/dtranx_fetched/{{inventory_hostname}}/dtranx.mapdb"
+    - { src: '{{dtranx_datastructure}}.dtranx.db0', dest: 'dtranx.db0' }
+    - { src: '{{dtranx_datastructure}}.dtranx.db1', dest: 'dtranx.db1' }
+    - { src: '{{dtranx_datastructure}}.dtranx.db2', dest: 'dtranx.db2' }
+    - { src: '{{dtranx_datastructure}}.dtranx.db3', dest: 'dtranx.db3' }
+    - { src: '{{dtranx_datastructure}}.dtranx.mapdb', dest: 'dtranx.mapdb' }
   when: dtranx_mode == 3
 
 
