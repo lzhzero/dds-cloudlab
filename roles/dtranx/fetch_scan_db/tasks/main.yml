@@ -1,0 +1,25 @@
+---
+- name: db scan
+  shell: "{{item}}"
+  with_items:
+    - "{{dtranx_dir}}/LevelDBScan {{dtranx_dir}}/backup/dtranx.db0 > {{project_dir}}/db0"
+    - "{{dtranx_dir}}/LevelDBScan {{dtranx_dir}}/backup/dtranx.db1 > {{project_dir}}/db1"
+    - "{{dtranx_dir}}/LevelDBScan {{dtranx_dir}}/backup/dtranx.db2 > {{project_dir}}/db2"
+    - "{{dtranx_dir}}/LevelDBScan {{dtranx_dir}}/backup/dtranx.db3 > {{project_dir}}/db3"
+    - "cat {{project_dir}}/db1 >> {{project_dir}}/db0"
+    - "cat {{project_dir}}/db2 >> {{project_dir}}/db0"
+    - "cat {{project_dir}}/db3 >> {{project_dir}}/db0"
+    - "rm {{project_dir}}/db1 {{project_dir}}/db2 {{project_dir}}/db3"
+
+- name: fetch to local
+  synchronize:
+    src: "{{item}}"
+    dest: "{{project_dir}}/{{inventory_hostname}}.db"
+    mode: pull
+  with_items:
+    - "{{project_dir}}/db0"
+
+- name: clean remote
+  shell: "{{item}}"
+  with_items:
+    - "rm {{project_dir}}/db0"

@@ -1,0 +1,7 @@
+---
+
+- name: fetch db after scanning from the LevelDB
+  hosts: dtranx_all
+  gather_facts: true
+  roles:
+    - roles/dtranx/fetch_scan_db
